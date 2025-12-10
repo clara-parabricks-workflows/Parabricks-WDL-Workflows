@@ -1,149 +1,167 @@
-version 1.0
-# Copyright 2021 NVIDIA CORPORATION & AFFILIATES
+version 1.2
+# Copyright 2025 NVIDIA CORPORATION & AFFILIATES
 
 task fq2bam {
     input {
-        File inputFASTQ_1
-        File inputFASTQ_2
-        File inputRefTarball
-
-        String readGroup_sampleName = "SAMPLE"
-        String readGroup_libraryName = "LIB1"
-        String readGroup_ID = "RG1"
-        String readGroup_platformName = "ILLUMINA"
-        String readGroup_PU = "unit1"
-
-        File? inputKnownSitesVCF
-        File? inputKnownSitesTBI
-        File? pbLicenseBin
-        Boolean use_best_practices = false
-        Boolean low_memory = true
-
-        String pbPATH = "pbrun"
-        String pbDocker = "nvcr.io/nvidia/clara/clara-parabricks:4.3.0-1"
-        String tmpDir = "tmp_fq2bam"
-        Int nGPU = 4
-        String gpuModel = "nvidia-tesla-t4"
-        String gpuDriverVersion = "525.60.13"
-        Int nThreads = 32
-        Int gbRAM = 180
-        Int diskGB = 0
-        String diskType = "SSD"
-        Int runtimeMinutes = 600
-        String hpcQueue = "gpu"
-        Int maxPreemptAttempts = 3
+        Array[File] reads
+        File fasta
+        File index
+        File? interval_file
+        Array[File]? known_sites
+        String output_fmt
+        Boolean single_ended
+        Array[String]? args
+        Int memory
+        Int num_gpus
+        Int num_cpus
+        String container
     }
 
-    Int auto_diskGB = if diskGB == 0 then ceil(5.0 * size(inputFASTQ_1, "GB")) + ceil(5.0 * size(inputFASTQ_2, "GB")) + ceil(3.0 * size(inputRefTarball, "GB")) + ceil(size(inputKnownSitesVCF, "GB")) + 150 else diskGB
+    String prefix = "test"
+    String extension_bam = output_fmt
+    String extension_bam_index = if output_fmt == "cram" then "crai" else "bai"
+    
+    String known_sites_command = if defined(known_sites) then
+        sep(" ", prefix("--knownSites ", select_first([known_sites, []])))
+        else ""
 
-    String best_practice_args = if use_best_practices then "--bwa-options \" -Y -K 100000000 \" " else ""
+    String known_sites_output_cmd = if defined(known_sites) then
+        "--out-recal-file ${prefix}.table"
+        else ""
+    
+    String interval_file_command = if defined(interval_file) then
+        "--interval-file ${interval_file}"
+        else ""
 
-    String rgID = if readGroup_sampleName == "SAMPLE" then readGroup_ID else readGroup_sampleName + "-" + readGroup_ID
-
-    String ref = basename(inputRefTarball, ".tar")
-    String outbase = basename(basename(basename(basename(inputFASTQ_1, ".gz"), ".fastq"), ".fq"), "_1")
+    String in_fq_command = if single_ended then 
+        "--in-se-fq ${sep(" ", reads)}"
+        else "--in-fq ${sep(" ", reads)}"
 
     command <<<
         set -e
-        set -x
-        set -o pipefail
-        mkdir -p ~{tmpDir} && \
-        time tar xf ~{inputRefTarball} && \
-        time ~{pbPATH} fq2bam \
-        --tmp-dir ~{tmpDir} \
-        --in-fq ~{inputFASTQ_1} ~{inputFASTQ_2} \
-        "@RG\tID:~{rgID}\tLB:~{readGroup_libraryName}\tPL:~{readGroup_platformName}\tSM:~{readGroup_sampleName}\tPU:~{readGroup_PU}" \
-        ~{best_practice_args} \
-        --ref ~{ref} \
-        ~{"--knownSites " + inputKnownSitesVCF + " --out-recal-file " + outbase + ".pb.BQSR-REPORT.txt"} \
-        --out-bam ~{outbase}.pb.bam \
-        ~{"--license-file " + pbLicenseBin}
-    >>>
+        INDEX=$(find -L ./ -name "*.amb" | sed 's/\.amb$//')
+        cp "~{fasta}" "$INDEX"
+
+        pbrun \
+            fq2bam \
+            --ref "$INDEX" \
+            "~{in_fq_command}" \
+            --out-bam "~{prefix}.~{extension_bam}" \
+            "~{known_sites_command}" \
+            "~{known_sites_output_cmd}" \
+            "~{interval_file_command}" \
+            --num-gpus "~{num_gpus}" \
+            --bwa-cpu-thread-pool "~{num_cpus}" \
+            --monitor-usage \
+            "~{sep(" ", select_first([args, []]))}"
+        >>>
 
     output {
-        File outputBAM = "~{outbase}.pb.bam"
-        File outputBAI = "~{outbase}.pb.bam.bai"
-        File? outputBQSR = "~{outbase}.pb.BQSR-REPORT.txt"
+        File bam = "${prefix}.${extension_bam}"
+        File bai = "${prefix}.${extension_bam}.${extension_bam_index}"
+        File? bqsr_table = if defined(known_sites) then "${prefix}.table" else None
+        File? qc_metrics = if contains(select_first([args,[]]), "--out-qc-metrics-dir") then "${prefix}_qc_metrics" else None
+        File? duplicate_metrics = if contains(select_first([args,[]]), "--out-duplicate-metrics") then "${prefix}.duplicate-metrics.txt" else None
     }
 
-    runtime {
-        docker : "~{pbDocker}"
-        disks : "local-disk ~{auto_diskGB} ~{diskType}"
-        cpu : nThreads
-        memory : "~{gbRAM} GB"
-        hpcMemory : gbRAM
-        hpcQueue : "~{hpcQueue}"
-        hpcRuntimeMinutes : runtimeMinutes
-        gpuType : "~{gpuModel}"
-        gpuCount : nGPU
-        nvidiaDriverVersion : "~{gpuDriverVersion}"
-        zones : ["us-central1-a", "us-central1-b", "us-central1-c"]
-        preemptible : maxPreemptAttempts
-    }
-}
-
-workflow ClaraParabricks_fq2bam {
-    input {
-        File inputFASTQ_1
-        File inputFASTQ_2
-        String readGroup_sampleName = "SAMPLE"
-        String readGroup_libraryName = "LIB1"
-        String readGroup_ID = "RG1"
-        String readGroup_platformName = "ILMN"
-        String readGroup_PU = "Barcode1"
-        File inputRefTarball
-        File? inputKnownSitesVCF
-        File? inputKnownSitesTBI
-        Boolean use_best_practices = false
-        Boolean low_memory = true
-        File? pbLicenseBin
-        String pbPATH = "pbrun"
-        String pbDocker = "nvcr.io/nvidia/clara/clara-parabricks:4.3.0-1"
-        String tmpDir = "tmp_fq2bam"
-        String gpuModel = "nvidia-tesla-t4"
-        Int nGPU = 4
-        Int nThreads = 32
-        Int gbRAM = 180
-        Int diskGB = 0
-        String diskType = "SSD"
-        Int runtimeMinutes = 600
-        Int maxPreemptAttempts = 3
-    }
-
-    call fq2bam {
-        input:
-            inputFASTQ_1=inputFASTQ_1,
-            inputFASTQ_2=inputFASTQ_2,
-            inputRefTarball=inputRefTarball,
-            inputKnownSitesVCF=inputKnownSitesVCF,
-            inputKnownSitesTBI=inputKnownSitesTBI,
-            use_best_practices=use_best_practices,
-            low_memory=low_memory,
-            pbLicenseBin=pbLicenseBin,
-            pbPATH=pbPATH,
-            readGroup_sampleName=readGroup_sampleName,
-            readGroup_libraryName=readGroup_libraryName,
-            readGroup_ID=readGroup_ID,
-            readGroup_platformName=readGroup_platformName,
-            pbDocker=pbDocker,
-            tmpDir=tmpDir,
-            nGPU=nGPU,
-            gpuModel=gpuModel,
-            nThreads=nThreads,
-            gbRAM=gbRAM,
-            diskGB=diskGB,
-            diskType=diskType,
-            runtimeMinutes=runtimeMinutes,
-            maxPreemptAttempts=maxPreemptAttempts
-    }
-
-    output {
-        File outputBAM = fq2bam.outputBAM
-        File outputBAI = fq2bam.outputBAI
-        File? outputBQSR = fq2bam.outputBQSR
+    requirements {
+        docker: container
+        cpu: num_cpus
+        gpu: true
+        memory: memory
     }
 
     meta {
-        Author: "Nvidia Clara Parabricks"
+        author: "Gary Burnett (gburnett@nvidia.com)"
+        description: "Converts FASTQ files to BAM/CRAM format using NVIDIA Parabricks fq2bam"
+        outputs: {
+            bam: "Aligned BAM/CRAM file",
+            bai: "Index file for the BAM/CRAM",
+            bqsr_table: "Optional BQSR table if known sites are provided",
+            qc_metrics: "Optional QC metrics directory if specified in args",
+            duplicate_metrics: "Optional duplicate metrics file if specified in args"
+        }
+    }
+
+    parameter_meta {
+        reads: "Array of FASTQ files to align"
+        fasta: "Reference genome FASTA file"
+        index: "BWA index file"
+        interval_file: "Optional interval file for targeted regions"
+        known_sites: "Optional array of known variant sites for BQSR"
+        output_fmt: "Output format: 'bam' or 'cram'"
+        single_ended: "Whether reads are single-ended"
+        args: "Optional additional arguments for pbrun"
+        memory: "Memory in GB"
+        num_gpus: "Number of GPUs to use"
+        num_cpus: "Number of CPU threads"
+        container: "Container image URI"
+    }
+}
+
+workflow parabricks_fq2bam {
+    input {
+        Array[File] reads
+        File fasta
+        File index
+        File? interval_file
+        Array[File]? known_sites
+        String output_fmt = "bam"
+        Boolean single_ended = false
+        Array[String]? args
+        Int memory = 64
+        Int num_gpus = 2
+        Int num_cpus = 64
+        String container = "nvcr.io/nvidia/clara/clara-parabricks:latest"
+    }
+
+    call fq2bam {
+        reads = reads,
+        fasta = fasta, 
+        index = index, 
+        interval_file = interval_file,
+        known_sites = known_sites, 
+        output_fmt = output_fmt, 
+        single_ended = single_ended, 
+        args = args, 
+        memory = memory, 
+        num_gpus = num_gpus, 
+        num_cpus = num_cpus, 
+        container = container
+    }
+
+    output {
+        File bam = fq2bam.bam
+        File bai = fq2bam.bai
+        File? bqsr_table = fq2bam.bqsr_table
+        File? qc_metrics = fq2bam.qc_metrics
+        File? duplicate_metrics = fq2bam.duplicate_metrics
+    }
+
+    meta {
+        author: "Gary Burnett (gburnett@nvidia.com)"
+        description: "Converts FASTQ files to BAM/CRAM format using NVIDIA Parabricks fq2bam"
+        outputs: {
+            bam: "Aligned BAM/CRAM file",
+            bai: "Index file for the BAM/CRAM",
+            bqsr_table: "Optional BQSR table if known sites are provided",
+            qc_metrics: "Optional QC metrics directory if specified in args",
+            duplicate_metrics: "Optional duplicate metrics file if specified in args"
+        }
+    }
+
+    parameter_meta {
+        reads: "Array of FASTQ files to align"
+        fasta: "Reference genome FASTA file"
+        index: "BWA index file"
+        interval_file: "Optional interval file for targeted regions"
+        known_sites: "Optional array of known variant sites for BQSR"
+        output_fmt: "Output format: 'bam' or 'cram'"
+        single_ended: "Whether reads are single-ended"
+        args: "Optional additional arguments for pbrun"
+        memory: "Memory in GB"
+        num_gpus: "Number of GPUs to use"
+        num_cpus: "Number of CPU threads"
+        container: "Container image URI"
     }
 }
