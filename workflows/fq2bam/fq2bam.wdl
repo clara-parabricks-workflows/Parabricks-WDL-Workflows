@@ -101,7 +101,7 @@ task fq2bam {
 
 workflow parabricks_fq2bam {
     input {
-        Array[File] reads
+        File sample_sheet
         File fasta
         File index
         File? interval_file
@@ -116,7 +116,7 @@ workflow parabricks_fq2bam {
     }
 
     call fq2bam {
-        reads = reads,
+        reads = read_lines(sample_sheet),
         fasta = fasta, 
         index = index, 
         interval_file = interval_file,
@@ -151,7 +151,7 @@ workflow parabricks_fq2bam {
     }
 
     parameter_meta {
-        reads: "Array of FASTQ files to align"
+        sample_sheet: "Sample sheet of FASTQ files to align"
         fasta: "Reference genome FASTA file"
         index: "BWA index file"
         interval_file: "Optional interval file for targeted regions"
