@@ -6,7 +6,8 @@
 REF_DIR=../data/ref
 mkdir -p ${REF_DIR}
 
-ref_files="{fasta,fasta.fai,fasta.64.alt,fasta.64.amb,fasta.64.ann,fasta.64.bwa,fasta.64.pac,fasta.64.sa}"
+# TODO: These files need to not have the 64 in the filename (must match fasta)
+ref_files="{fasta,fasta.fai,fasta.64.alt,fasta.64.amb,fasta.64.ann,fasta.64.bwt,fasta.64.pac,fasta.64.sa}"
 file_url="https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.${ref_files}"
 
 curl $file_url -C - -O --output-dir ${REF_DIR}

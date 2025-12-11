@@ -6,6 +6,6 @@
 DATA_DIR=../../data
 mkdir -p ${DATA_DIR}
 
-file_url="https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz"
+file_url="https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz"
 
 curl $file_url -C - -O --output-dir ${DATA_DIR}
