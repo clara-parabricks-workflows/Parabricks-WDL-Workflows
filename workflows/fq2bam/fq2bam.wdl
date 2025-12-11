@@ -5,7 +5,6 @@ task fq2bam {
     input {
         Array[File] reads
         File fasta
-        File index
         File? interval_file
         Array[File]? known_sites
         String output_fmt
@@ -39,6 +38,7 @@ task fq2bam {
 
     command <<<
         set -e
+        # TODO: Use symlink instead 
         INDEX=$(find -L ./ -name "*.amb" | sed 's/\.amb$//')
         cp "~{fasta}" "$INDEX"
 
@@ -86,7 +86,6 @@ task fq2bam {
     parameter_meta {
         reads: "Array of FASTQ files to align"
         fasta: "Reference genome FASTA file"
-        index: "BWA index file"
         interval_file: "Optional interval file for targeted regions"
         known_sites: "Optional array of known variant sites for BQSR"
         output_fmt: "Output format: 'bam' or 'cram'"
@@ -103,22 +102,20 @@ workflow parabricks_fq2bam {
     input {
         File sample_sheet
         File fasta
-        File index
         File? interval_file
         Array[File]? known_sites
-        String output_fmt = "bam"
-        Boolean single_ended = false
+        String output_fmt
+        Boolean single_ended
         Array[String]? args
-        Int memory = 64
-        Int num_gpus = 2
-        Int num_cpus = 64
-        String container = "nvcr.io/nvidia/clara/clara-parabricks:latest"
+        Int memory
+        Int num_gpus
+        Int num_cpus
+        String container
     }
 
     call fq2bam {
         reads = read_lines(sample_sheet),
         fasta = fasta, 
-        index = index, 
         interval_file = interval_file,
         known_sites = known_sites, 
         output_fmt = output_fmt, 
@@ -153,7 +150,6 @@ workflow parabricks_fq2bam {
     parameter_meta {
         sample_sheet: "Sample sheet of FASTQ files to align"
         fasta: "Reference genome FASTA file"
-        index: "BWA index file"
         interval_file: "Optional interval file for targeted regions"
         known_sites: "Optional array of known variant sites for BQSR"
         output_fmt: "Output format: 'bam' or 'cram'"

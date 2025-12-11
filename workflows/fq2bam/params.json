@@ -1,0 +1,13 @@
+{
+    "parabricks_fq2bam.sample_sheet": "samplesheet.csv",
+    "parabricks_fq2bam.fasta": "../data/reference/Homo_sapiens_assembly38.fasta",
+    "parabricks_fq2bam.interval_file": "",
+    "parabricks_fq2bam.known_sites": "",
+    "parabricks_fq2bam.output_fmt": "bam",
+    "parabricks_fq2bam.single_ended": false,
+    "parabricks_fq2bam.args": "",
+    "parabricks_fq2bam.memory": 192,
+    "parabricks_fq2bam.num_gpus": 2,
+    "parabricks_fq2bam.num_cpus": 48,
+    "parabricks_fq2bam.container": "nvcr.io/nvidia/clara/clara-parabricks:latest"
+}
