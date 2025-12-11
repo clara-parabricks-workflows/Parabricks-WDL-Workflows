@@ -4,7 +4,7 @@ version 1.2
 task fq2bam {
     input {
         Array[File] reads
-        File fasta
+        BwaIndex bwaIndex
         File? interval_file
         Array[File]? known_sites
         String output_fmt
@@ -33,27 +33,24 @@ task fq2bam {
         else ""
 
     String in_fq_command = if single_ended then 
-        "--in-se-fq ${sep(" ", reads)}"
+        sep(" ", prefix("--in-se-fq ", reads))
         else "--in-fq ${sep(" ", reads)}"
 
     command <<<
         set -e
-        # TODO: Use symlink instead 
-        INDEX=$(find -L ./ -name "*.amb" | sed 's/\.amb$//')
-        cp "~{fasta}" "$INDEX"
 
         pbrun \
             fq2bam \
-            --ref "$INDEX" \
-            "~{in_fq_command}" \
+            --ref ~{bwaIndex.fastaFile} \
+            ~{in_fq_command} \
             --out-bam "~{prefix}.~{extension_bam}" \
-            "~{known_sites_command}" \
-            "~{known_sites_output_cmd}" \
-            "~{interval_file_command}" \
-            --num-gpus "~{num_gpus}" \
-            --bwa-cpu-thread-pool "~{num_cpus}" \
+            ~{known_sites_command} \
+            ~{known_sites_output_cmd} \
+            ~{interval_file_command} \
+            --num-gpus ~{num_gpus} \
+            --bwa-cpu-thread-pool ~{num_cpus} \
             --monitor-usage \
-            "~{sep(" ", select_first([args, []]))}"
+            ~{sep(" ", select_first([args, []]))}
         >>>
 
     output {
@@ -67,25 +64,23 @@ task fq2bam {
     requirements {
         docker: container
         cpu: num_cpus
-        gpu: true
         memory: memory
+        gpu: true
+    }
+
+    hints {
+        gpu: num_gpus
     }
 
     meta {
         author: "Gary Burnett (gburnett@nvidia.com)"
         description: "Converts FASTQ files to BAM/CRAM format using NVIDIA Parabricks fq2bam"
-        outputs: {
-            bam: "Aligned BAM/CRAM file",
-            bai: "Index file for the BAM/CRAM",
-            bqsr_table: "Optional BQSR table if known sites are provided",
-            qc_metrics: "Optional QC metrics directory if specified in args",
-            duplicate_metrics: "Optional duplicate metrics file if specified in args"
-        }
     }
 
     parameter_meta {
-        reads: "Array of FASTQ files to align"
-        fasta: "Reference genome FASTA file"
+        # inputs
+        reads: {description: "Array of FASTQ files to align", category: "required"}
+        bwaIndex: "Reference genome FASTA file"
         interval_file: "Optional interval file for targeted regions"
         known_sites: "Optional array of known variant sites for BQSR"
         output_fmt: "Output format: 'bam' or 'cram'"
@@ -95,13 +90,25 @@ task fq2bam {
         num_gpus: "Number of GPUs to use"
         num_cpus: "Number of CPU threads"
         container: "Container image URI"
+
+        # outputs
+        bam: "Aligned BAM/CRAM file"
+        bai: "Index file for the BAM/CRAM"
+        bqsr_table: "Optional BQSR table if known sites are provided"
+        qc_metrics: "Optional QC metrics directory if specified in args"
+        duplicate_metrics: "Optional duplicate metrics file if specified in args"
     }
+}
+
+struct BwaIndex {
+    File fastaFile
+    Array[File] indexFiles
 }
 
 workflow parabricks_fq2bam {
     input {
         File sample_sheet
-        File fasta
+        BwaIndex bwaIndex
         File? interval_file
         Array[File]? known_sites
         String output_fmt
@@ -115,7 +122,7 @@ workflow parabricks_fq2bam {
 
     call fq2bam {
         reads = read_lines(sample_sheet),
-        fasta = fasta, 
+        bwaIndex = bwaIndex, 
         interval_file = interval_file,
         known_sites = known_sites, 
         output_fmt = output_fmt, 
@@ -149,7 +156,7 @@ workflow parabricks_fq2bam {
 
     parameter_meta {
         sample_sheet: "Sample sheet of FASTQ files to align"
-        fasta: "Reference genome FASTA file"
+        bwaIndex: "Reference genome FASTA file"
         interval_file: "Optional interval file for targeted regions"
         known_sites: "Optional array of known variant sites for BQSR"
         output_fmt: "Output format: 'bam' or 'cram'"
