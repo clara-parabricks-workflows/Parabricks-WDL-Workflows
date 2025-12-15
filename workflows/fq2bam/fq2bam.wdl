@@ -145,16 +145,10 @@ workflow parabricks_fq2bam {
     meta {
         author: "Gary Burnett (gburnett@nvidia.com)"
         description: "Converts FASTQ files to BAM/CRAM format using NVIDIA Parabricks fq2bam"
-        outputs: {
-            bam: "Aligned BAM/CRAM file",
-            bai: "Index file for the BAM/CRAM",
-            bqsr_table: "Optional BQSR table if known sites are provided",
-            qc_metrics: "Optional QC metrics directory if specified in args",
-            duplicate_metrics: "Optional duplicate metrics file if specified in args"
-        }
     }
 
     parameter_meta {
+        # inputs 
         sample_sheet: "Sample sheet of FASTQ files to align"
         bwaIndex: "Reference genome FASTA file"
         interval_file: "Optional interval file for targeted regions (can be used multiple times)"
@@ -166,5 +160,12 @@ workflow parabricks_fq2bam {
         num_gpus: "Number of GPUs to use"
         num_cpus: "Number of CPU threads"
         container: "Container image URI"
+
+        # outputs
+        bam: "Aligned BAM/CRAM file"
+        bai: "Index file for the BAM/CRAM"
+        bqsr_table: "Optional BQSR table if known sites are provided"
+        qc_metrics: "Optional QC metrics directory if specified in args"
+        duplicate_metrics: "Optional duplicate metrics file if specified in args"
     }
 }
