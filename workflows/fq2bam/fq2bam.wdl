@@ -48,7 +48,6 @@ task fq2bam {
             ~{known_sites_output_cmd} \
             ~{interval_file_command} \
             --num-gpus ~{num_gpus} \
-            --bwa-cpu-thread-pool ~{num_cpus} \
             --monitor-usage \
             ~{sep(" ", select_first([args, []]))}
         >>>
