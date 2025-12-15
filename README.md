@@ -1,8 +1,19 @@
 # Parabricks WDL
 
-## Getting Started
+This is a repository of WDL workflow files for popular Parabricks tools. 
 
-5 Minute Quick Start 
+## Quick Start 
+
+Download the test data: 
+
+```
+make
+```
+
+Run the tests: 
+
+```
+```
 
 ## Requirements 
 
@@ -20,3 +31,22 @@ cargo install sprocket --locked
 
 Hint: If OpenSSL issues arise, then users may need to run `sudo apt install libssl-dev`. 
 
+## Downloading the test data 
+
+Download the entire dataset: 
+
+`make` 
+
+Download only the reference data: 
+
+`make ref` 
+
+Download only data for individual tools: 
+
+`make fq2bam` 
+
+## Running the tests 
+
+```
+sprocket run ./workflows/fq2bam/fq2bam.wdl ./workflows/fq2bam/params.json
+```
