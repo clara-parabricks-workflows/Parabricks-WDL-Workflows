@@ -1,3 +1,23 @@
 {
-    "parabricks_deepvariant.input": ""
+    "parabricks_deepvariant.bam": "/home/gburnett/parabricks-wdl/data/test.bam",
+    "parabricks_deepvariant.bwaIndex": {
+        "fastaFile": "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta",
+        "indexFiles": [
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.fai",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.amb",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.ann",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.bwt",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.pac",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.sa",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.dict"
+        ]
+    },
+    "parabricks_deepvariant.interval_file": null,
+    "parabricks_deepvariant.pb_model_file": null,
+    "parabricks_deepvariant.proposed_variants": null,
+    "parabricks_deepvariant.args": null,
+    "parabricks_deepvariant.memory": 192,
+    "parabricks_deepvariant.num_gpus": 2,
+    "parabricks_deepvariant.num_cpus": 16,
+    "parabricks_deepvariant.container": "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-2"
 }
