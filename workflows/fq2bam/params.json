@@ -12,7 +12,7 @@
             "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.dict"
         ]
     },
-    "parabricks_fq2bam.interval_file": "",
+    "parabricks_fq2bam.interval_file": null,
     "parabricks_fq2bam.known_sites": null,
     "parabricks_fq2bam.output_fmt": "bam",
     "parabricks_fq2bam.single_ended": true,

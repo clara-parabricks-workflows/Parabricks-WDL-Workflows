@@ -5,7 +5,7 @@ task fq2bam {
     input {
         Array[File] reads
         BwaIndex bwaIndex
-        File? interval_file
+        Array[File]? interval_file
         Array[File]? known_sites
         String output_fmt
         Boolean single_ended
@@ -29,7 +29,7 @@ task fq2bam {
         else ""
     
     String interval_file_command = if defined(interval_file) then
-        "--interval-file ${interval_file}"
+        sep(" ", prefix("--interval-file ", select_first([interval_file, []])))
         else ""
 
     String in_fq_command = if single_ended then 
@@ -81,8 +81,8 @@ task fq2bam {
         # inputs
         reads: {description: "Array of FASTQ files to align", category: "required"}
         bwaIndex: "Reference genome FASTA file"
-        interval_file: "Optional interval file for targeted regions"
-        known_sites: "Optional array of known variant sites for BQSR"
+        interval_file: "Optional interval file for targeted regions (can be used multiple times)"
+        known_sites: "Optional array of known variant sites for BQSR (can be used multiple times)"
         output_fmt: "Output format: 'bam' or 'cram'"
         single_ended: "Whether reads are single-ended"
         args: "Optional additional arguments for pbrun"
@@ -109,7 +109,7 @@ workflow parabricks_fq2bam {
     input {
         File sample_sheet
         BwaIndex bwaIndex
-        File? interval_file
+        Array[File]? interval_file
         Array[File]? known_sites
         String output_fmt
         Boolean single_ended
@@ -157,8 +157,8 @@ workflow parabricks_fq2bam {
     parameter_meta {
         sample_sheet: "Sample sheet of FASTQ files to align"
         bwaIndex: "Reference genome FASTA file"
-        interval_file: "Optional interval file for targeted regions"
-        known_sites: "Optional array of known variant sites for BQSR"
+        interval_file: "Optional interval file for targeted regions (can be used multiple times)"
+        known_sites: "Optional array of known variant sites for BQSR (can be used multiple times)"
         output_fmt: "Output format: 'bam' or 'cram'"
         single_ended: "Whether reads are single-ended"
         args: "Optional additional arguments for pbrun"
