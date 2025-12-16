@@ -34,7 +34,7 @@ task deepvariant {
 
         pbrun \
             deepvariant \
-            --ref ~{bwaIndex.fastaFile} \
+            --ref ~{bwaIndex.fasta} \
             --in-bam ~{bam} \
             --out-variants "~{prefix}.vcf" \
             ~{interval_file_command} \
@@ -90,6 +90,6 @@ task deepvariant {
 }
 
 struct BwaIndex {
-    File fastaFile
+    File fasta
     Array[File] indexFiles
 }

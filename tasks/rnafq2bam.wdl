@@ -30,7 +30,7 @@ task rnafq2bam {
 
         pbrun \
             rnafq2bam \
-            --ref ~{bwaIndex.fastaFile} \
+            --ref ~{bwaIndex.fasta} \
             ~{in_fq_command} \
             --out-bam "~{prefix}.~{extension_bam}" \
             ~{interval_file_command} \
@@ -55,6 +55,6 @@ task rnafq2bam {
 }
 
 struct BwaIndex {
-    File fastaFile
+    File fasta
     Array[File] indexFiles
 }

@@ -3,7 +3,7 @@ version 1.2
 import "../../tasks/rnafq2bam.wdl" as rnafq2bam
 
 struct BwaIndex {
-    File fastaFile
+    File fasta
     Array[File] indexFiles
 }
 

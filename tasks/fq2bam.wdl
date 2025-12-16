@@ -40,7 +40,7 @@ task fq2bam {
 
         pbrun \
             fq2bam \
-            --ref ~{bwaIndex.fastaFile} \
+            --ref ~{bwaIndex.fasta} \
             ~{in_fq_command} \
             --out-bam "~{prefix}.~{extension_bam}" \
             ~{known_sites_command} \
@@ -99,6 +99,6 @@ task fq2bam {
 }
 
 struct BwaIndex {
-    File fastaFile
+    File fasta
     Array[File] indexFiles
 }

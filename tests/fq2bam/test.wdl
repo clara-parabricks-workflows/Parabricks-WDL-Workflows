@@ -1,11 +1,12 @@
 version 1.2
 
 import "../../tasks/fq2bam.wdl" as fq2bam
+import "../../tasks/utils/bwa_index.wdl" as bwa_index
 
 workflow fq2bam_test {
     input {
         File sample_sheet
-        BwaIndex bwaIndex
+        File fasta
         Array[File]? interval_file
         Array[File]? known_sites
         String output_fmt
@@ -17,9 +18,13 @@ workflow fq2bam_test {
         String container
     }
 
+    call bwa_index.bwa_index {
+        fasta = fasta
+    }
+
     call fq2bam.fq2bam {
         reads = read_lines(sample_sheet),
-        bwaIndex = bwaIndex, 
+        bwaIndex = BwaIndex { fasta: bwa_index.fastaFile, indexFiles: bwa_index.indexFiles },
         interval_file = interval_file,
         known_sites = known_sites, 
         output_fmt = output_fmt, 

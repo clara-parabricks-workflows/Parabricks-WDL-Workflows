@@ -23,7 +23,7 @@ task mutectcaller {
 
         pbrun \
             mutectcaller \
-            --ref ~{bwaIndex.fastaFile} \
+            --ref ~{bwaIndex.fasta} \
             --tumor-bam ~{tumor_bam} \
             --normal-bam ~{normal_bam} \
             --out-variants "~{prefix}.vcf" \
@@ -46,6 +46,6 @@ task mutectcaller {
 }
 
 struct BwaIndex {
-    File fastaFile
+    File fasta
     Array[File] indexFiles
 }

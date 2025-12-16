@@ -29,7 +29,7 @@ task haplotypecaller {
 
         pbrun \
             haplotypecaller \
-            --ref ~{bwaIndex.fastaFile} \
+            --ref ~{bwaIndex.fasta} \
             --in-bam ~{bam} \
             --out-variants "~{prefix}.vcf" \
             ~{interval_file_command} \
@@ -77,6 +77,6 @@ task haplotypecaller {
 }
 
 struct BwaIndex {
-    File fastaFile
+    File fasta
     Array[File] indexFiles
 }

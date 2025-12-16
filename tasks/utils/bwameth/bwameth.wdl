@@ -12,7 +12,7 @@ task bwameth_index {
         String container
     }
 
-    command <<<<
+    command <<<
         set -e
 
         # Prefer bwameth.py index if available, otherwise fall back to bwa index
@@ -21,7 +21,7 @@ task bwameth_index {
         else
             bwa index ~{sep(" ", select_first([args, []]))} ~{ref_fasta}
         fi
-    >>>>
+    >>>
 
     output {
         File amb = "${ref_fasta}.amb"
@@ -39,7 +39,10 @@ task bwameth_index {
         memory: memory
     }
 
-    meta { author: "Gary Burnett (gburnett@nvidia.com)", description: "Creates index files for use with bwa-meth or BWA" }
+    meta { 
+        author: "Gary Burnett (gburnett@nvidia.com)"
+        description: "Creates index files for use with bwa-meth or BWA" 
+    }
 
     parameter_meta {
         ref_fasta: "Reference FASTA file to index"
@@ -51,7 +54,7 @@ task bwameth_index {
 }
 
 struct BwaIndex {
-    File fastaFile
+    File fasta
     Array[File] indexFiles
 }
 
@@ -73,7 +76,7 @@ workflow bwameth_index_workflow {
     }
 
     output {
-        BwaIndex bwaIndex = BwaIndex { fastaFile: bwameth_index.fastaFile, indexFiles: bwameth_index.indexFiles }
+        BwaIndex bwaIndex = BwaIndex { fasta: bwameth_index.fastaFile, indexFiles: bwameth_index.indexFiles }
     }
 
     meta { author: "Gary Burnett (gburnett@nvidia.com)" }
