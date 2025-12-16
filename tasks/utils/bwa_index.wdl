@@ -1,7 +1,4 @@
 version 1.2
-# Copyright 2025 NVIDIA CORPORATION & AFFILIATES
-
-# Build BWA index files for a FASTA reference (baseline bwa)
 
 task bwa_index {
     input {
@@ -9,7 +6,7 @@ task bwa_index {
         Array[String]? args = []
         Int memory = 8
         Int num_cpus = 4
-        String container = "docker://quay.io/biocontainers/bwa:0.7.17--he941832_5"
+        String container = "biocontainers/bwa:v0.7.17_cv1"
     }
 
     String prefix = basename(fasta)

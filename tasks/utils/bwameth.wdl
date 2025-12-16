@@ -6,21 +6,16 @@ version 1.2
 task bwameth_index {
     input {
         File ref_fasta
-        Array[String]? args
-        Int memory
-        Int num_cpus
-        String container
+        Array[String]? args = []
+        Int memory = 8
+        Int num_cpus = 4
+        String container = "josousa/bwa-meth:0.2.7"
     }
 
     command <<<
         set -e
 
-        # Prefer bwameth.py index if available, otherwise fall back to bwa index
-        if command -v bwameth.py >/dev/null 2>&1; then
-            bwameth.py index ~{ref_fasta} ~{sep(" ", select_first([args, []]))}
-        else
-            bwa index ~{sep(" ", select_first([args, []]))} ~{ref_fasta}
-        fi
+        bwameth.py index ~{ref_fasta} ~{sep(" ", select_first([args, []]))}
     >>>
 
     output {

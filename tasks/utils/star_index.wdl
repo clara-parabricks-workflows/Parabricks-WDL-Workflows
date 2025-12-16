@@ -8,7 +8,7 @@ task star_index {
         Array[String]? args = []
         Int memory = 32
         Int num_cpus = 8
-        String container = "docker://quay.io/biocontainers/star:2.7.10a--0"
+        String container = "biocontainers/rna-star:v2.7.0adfsg-1-deb_cv1" 
     }
 
     String prefix = genome_dir
