@@ -1,0 +1,24 @@
+{
+    "fq2bammeth_workflow.sample_sheet": "../fq2bam/samplesheet.csv",
+    "fq2bammeth_workflow.bwaIndex": {
+        "fastaFile": "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta",
+        "indexFiles": [
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.fai",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.amb",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.ann",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.bwt",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.pac",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.sa",
+            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.dict"
+        ]
+    },
+    "fq2bammeth_workflow.interval_file": null,
+    "fq2bammeth_workflow.known_sites": null,
+    "fq2bammeth_workflow.output_fmt": "bam",
+    "fq2bammeth_workflow.single_ended": true,
+    "fq2bammeth_workflow.args": null,
+    "fq2bammeth_workflow.memory": 192,
+    "fq2bammeth_workflow.num_gpus": 2,
+    "fq2bammeth_workflow.num_cpus": 16,
+    "fq2bammeth_workflow.container": "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-2"
+}

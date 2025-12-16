@@ -1,4 +1,4 @@
-WORKFLOWS_DIR := workflows
+WORKFLOWS_DIR := tests
 UTILS_DIR := utils
 SUBDIRS := $(shell find $(WORKFLOWS_DIR) -mindepth 1 -maxdepth 1 -type d)
 SUBDIR_NAMES := $(notdir $(SUBDIRS))

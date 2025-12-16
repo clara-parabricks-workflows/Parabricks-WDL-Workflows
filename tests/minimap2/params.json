@@ -1,0 +1,11 @@
+{
+    "minimap2_test.sample_sheet": "../fq2bam/samplesheet.csv",
+    "minimap2_test.ref_fasta": "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta",
+    "minimap2_test.output_fmt": "bam",
+    "minimap2_test.single_ended": true,
+    "minimap2_test.args": null,
+    "minimap2_test.memory": 96,
+    "minimap2_test.num_gpus": 1,
+    "minimap2_test.num_cpus": 8,
+    "minimap2_test.container": "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-2"
+}

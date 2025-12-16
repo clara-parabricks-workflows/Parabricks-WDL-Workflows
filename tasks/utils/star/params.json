@@ -1,0 +1,9 @@
+{
+  "star_index_workflow.ref_fasta": "data/ref/Homo_sapiens_assembly38.fasta",
+  "star_index_workflow.ref_gtf": null,
+  "star_index_workflow.genome_dir": "star_genome",
+  "star_index_workflow.args": ["--sjdbOverhang", "100"],
+  "star_index_workflow.memory": 32,
+  "star_index_workflow.num_cpus": 8,
+  "star_index_workflow.container": "docker://quay.io/biocontainers/star:2.7.10a--0"
+}

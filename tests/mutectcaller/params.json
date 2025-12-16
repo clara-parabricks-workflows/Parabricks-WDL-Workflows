@@ -1,6 +1,7 @@
 {
-    "parabricks_deepvariant.bam": "/home/gburnett/parabricks-wdl/data/test.bam",
-    "parabricks_deepvariant.bwaIndex": {
+    "mutectcaller_test.tumor_bam": "/home/gburnett/parabricks-wdl/data/test.bam",
+    "mutectcaller_test.normal_bam": "/home/gburnett/parabricks-wdl/data/test.bam",
+    "mutectcaller_test.bwaIndex": {
         "fastaFile": "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta",
         "indexFiles": [
             "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.fai",
@@ -12,12 +13,10 @@
             "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.dict"
         ]
     },
-    "parabricks_deepvariant.interval_file": null,
-    "parabricks_deepvariant.pb_model_file": null,
-    "parabricks_deepvariant.proposed_variants": null,
-    "parabricks_deepvariant.args": null,
-    "parabricks_deepvariant.memory": 192,
-    "parabricks_deepvariant.num_gpus": 2,
-    "parabricks_deepvariant.num_cpus": 16,
-    "parabricks_deepvariant.container": "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-2"
+    "mutectcaller_test.known_sites": null,
+    "mutectcaller_test.args": null,
+    "mutectcaller_test.memory": 192,
+    "mutectcaller_test.num_gpus": 2,
+    "mutectcaller_test.num_cpus": 16,
+    "mutectcaller_test.container": "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-2"
 }

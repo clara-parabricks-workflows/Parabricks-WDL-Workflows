@@ -1,0 +1,7 @@
+{
+  "bwameth_index_workflow.ref_fasta": "data/ref/Homo_sapiens_assembly38.fasta",
+  "bwameth_index_workflow.args": [],
+  "bwameth_index_workflow.memory": 8,
+  "bwameth_index_workflow.num_cpus": 4,
+  "bwameth_index_workflow.container": "docker://quay.io/biocontainers/bwa:0.7.17--he941832_5"
+}

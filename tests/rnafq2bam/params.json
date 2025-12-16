@@ -1,6 +1,6 @@
 {
-    "parabricks_haplotypecaller.bam": "/home/gburnett/parabricks-wdl/data/test.bam",
-    "parabricks_haplotypecaller.bwaIndex": {
+    "parabricks_rnafq2bam.sample_sheet": "../fq2bam/samplesheet.csv",
+    "parabricks_rnafq2bam.bwaIndex": {
         "fastaFile": "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta",
         "indexFiles": [
             "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.fai",
@@ -12,11 +12,10 @@
             "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.dict"
         ]
     },
-    "parabricks_haplotypecaller.interval_file": null,
-    "parabricks_haplotypecaller.known_sites": null,
-    "parabricks_haplotypecaller.args": null,
-    "parabricks_haplotypecaller.memory": 192,
-    "parabricks_haplotypecaller.num_gpus": 2,
-    "parabricks_haplotypecaller.num_cpus": 16,
-    "parabricks_haplotypecaller.container": "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-2"
+    "parabricks_rnafq2bam.interval_file": null,
+    "parabricks_rnafq2bam.args": null,
+    "parabricks_rnafq2bam.memory": 192,
+    "parabricks_rnafq2bam.num_gpus": 2,
+    "parabricks_rnafq2bam.num_cpus": 16,
+    "parabricks_rnafq2bam.container": "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-2"
 }

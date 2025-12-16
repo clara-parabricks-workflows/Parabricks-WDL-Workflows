@@ -1,0 +1,9 @@
+{
+    "starfusion_test.sample_sheet": "../fq2bam/samplesheet.csv",
+    "starfusion_test.ref_fasta": "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta",
+    "starfusion_test.args": null,
+    "starfusion_test.memory": 192,
+    "starfusion_test.num_gpus": 2,
+    "starfusion_test.num_cpus": 16,
+    "starfusion_test.container": "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-2"
+}
