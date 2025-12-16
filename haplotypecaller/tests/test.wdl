@@ -1,6 +1,6 @@
 version 1.2
 
-import "../../tasks/haplotypecaller.wdl" as haplotypecaller
+import "../haplotypecaller.wdl" as haplotypecaller
 
 workflow haplotypecaller_test {
 

@@ -48,5 +48,5 @@ Download only data for individual tools:
 ## Running the tests 
 
 ```
-sprocket run ./tests/fq2bam/test.wdl ./tests/fq2bam/params.json
+sprocket run ./fq2bam/tests/test.wdl ./fq2bam/tests/params.json
 ```

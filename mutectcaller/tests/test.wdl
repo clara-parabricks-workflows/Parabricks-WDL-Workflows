@@ -1,6 +1,6 @@
 version 1.2
 
-import "../../tasks/mutectcaller.wdl" as mutectcaller
+import "../mutectcaller.wdl" as mutectcaller
 
 workflow mutectcaller_test {
     input {

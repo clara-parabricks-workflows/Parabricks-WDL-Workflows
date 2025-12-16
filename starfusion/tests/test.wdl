@@ -1,6 +1,6 @@
 version 1.2
 
-import "../../tasks/starfusion.wdl" as starfusion
+import "../starfusion.wdl" as starfusion
 
 workflow starfusion_test {
     input {

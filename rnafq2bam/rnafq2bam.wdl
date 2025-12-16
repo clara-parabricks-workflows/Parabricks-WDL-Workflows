@@ -1,6 +1,6 @@
 version 1.2
 
-import "utils/ref_struct.wdl" as ref_struct
+import "../shared/ref_struct.wdl" as ref_struct
 
 task rnafq2bam {
     input {

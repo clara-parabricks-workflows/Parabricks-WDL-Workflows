@@ -1,6 +1,6 @@
 version 1.2
 
-import "../../tasks/deepvariant.wdl" as deepvariant
+import "../deepvariant.wdl" as deepvariant
 
 workflow deepvariant_test {
 

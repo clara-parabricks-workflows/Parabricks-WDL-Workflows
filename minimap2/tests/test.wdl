@@ -1,6 +1,6 @@
 version 1.2
 
-import "../../tasks/minimap2.wdl" as minimap2  
+import "../minimap2.wdl" as minimap2  
 
 workflow minimap2_test {
     input {
