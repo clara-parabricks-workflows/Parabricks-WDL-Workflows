@@ -5,7 +5,7 @@ import "../../tasks/fq2bammeth.wdl" as fq2bammeth
 workflow fq2bammeth_test {
     input {
         File sample_sheet
-        BwaIndex bwaIndex
+        ReferenceFiles ref
         Array[File]? interval_file
         Array[File]? known_sites
         String output_fmt
@@ -19,7 +19,7 @@ workflow fq2bammeth_test {
 
     call fq2bammeth.fq2bammeth {
         reads = read_lines(sample_sheet),
-        bwaIndex = bwaIndex,
+        ref = ref,
         interval_file = interval_file,
         known_sites = known_sites,
         output_fmt = output_fmt,

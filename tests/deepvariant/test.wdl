@@ -6,7 +6,7 @@ workflow deepvariant_test {
 
     input {
         File bam
-        BwaIndex bwaIndex
+        ReferenceFiles ref
         Array[File]? interval_file
         File? pb_model_file
         File? proposed_variants
@@ -19,7 +19,7 @@ workflow deepvariant_test {
 
     call deepvariant.deepvariant {
         bam = bam,
-        bwaIndex = bwaIndex, 
+        ref = ref, 
         interval_file = interval_file,
         pb_model_file = pb_model_file,
         proposed_variants = proposed_variants,

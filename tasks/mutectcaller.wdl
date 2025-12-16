@@ -1,10 +1,12 @@
 version 1.2
 
+import "utils/ref_struct.wdl" as ref_struct
+
 task mutectcaller {
     input {
         File tumor_bam
         File normal_bam
-        BwaIndex bwaIndex
+        ReferenceFiles ref
         Array[File]? known_sites
         Array[String]? args
         Int memory
@@ -23,7 +25,7 @@ task mutectcaller {
 
         pbrun \
             mutectcaller \
-            --ref ~{bwaIndex.fasta} \
+            --ref ~{ref.fasta} \
             --tumor-bam ~{tumor_bam} \
             --normal-bam ~{normal_bam} \
             --out-variants "~{prefix}.vcf" \

@@ -6,7 +6,7 @@ workflow mutectcaller_test {
     input {
         File tumor_bam
         File normal_bam
-        BwaIndex bwaIndex
+        ReferenceFiles ref
         Array[File]? known_sites
         Array[String]? args
         Int memory
@@ -18,7 +18,7 @@ workflow mutectcaller_test {
     call mutectcaller.mutectcaller {
         tumor_bam = tumor_bam,
         normal_bam = normal_bam,
-        bwaIndex = bwaIndex,
+        ref = ref,
         known_sites = known_sites,
         args = args,
         memory = memory,

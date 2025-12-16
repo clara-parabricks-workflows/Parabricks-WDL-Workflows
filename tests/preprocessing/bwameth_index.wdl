@@ -69,7 +69,7 @@ workflow bwameth_index_workflow {
     }
 
     output {
-        BwaIndex bwaIndex = BwaIndex { fasta: bwameth_index.fastaFile, indexFiles: bwameth_index.indexFiles }
+        
     }
 
     meta { author: "Gary Burnett (gburnett@nvidia.com)" }

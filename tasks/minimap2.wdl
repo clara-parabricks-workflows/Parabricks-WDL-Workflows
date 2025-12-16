@@ -44,7 +44,13 @@ task minimap2 {
         memory: memory
         gpu: true
     }
-    hints { gpu: num_gpus }
 
-    meta { author: "Gary Burnett (gburnett@nvidia.com)" }
+    hints { 
+        gpu: num_gpus 
+    }
+
+    meta { 
+        author: "Gary Burnett (gburnett@nvidia.com)" 
+        description: "NVIDIA Parabricks GPU accelerated Minimap2"
+    }
 }

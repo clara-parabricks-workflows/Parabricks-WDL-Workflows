@@ -1,9 +1,11 @@
 version 1.2
 
+import "utils/ref_struct.wdl" as ref_struct
+
 task fq2bammeth {
     input {
         Array[File] reads
-        BwaIndex bwaIndex
+        ReferenceFiles ref
         Array[File]? interval_file
         Array[File]? known_sites
         String output_fmt
@@ -36,7 +38,7 @@ task fq2bammeth {
 
         pbrun \
             fq2bammeth \
-            --ref ~{bwaIndex.fasta} \
+            --ref ~{ref.fasta} \
             ~{in_fq_command} \
             --out-bam "~{prefix}.~{extension_bam}" \
             ~{known_sites_command} \

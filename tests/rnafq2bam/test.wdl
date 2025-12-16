@@ -2,16 +2,10 @@ version 1.2
 
 import "../../tasks/rnafq2bam.wdl" as rnafq2bam
 
-struct BwaIndex {
-    File fasta
-    File fasta_fai
-    Array[File] indexFiles
-}
-
 workflow rnafq2bam_test {
     input {
         File sample_sheet
-        BwaIndex bwaIndex
+        ReferenceFiles ref
         Array[File]? interval_file
         Array[String]? args
         Int memory
@@ -22,7 +16,7 @@ workflow rnafq2bam_test {
 
     call rnafq2bam.rnafq2bam {
         reads = read_lines(sample_sheet),
-        bwaIndex = bwaIndex,
+        ref = ref,
         interval_file = interval_file,
         args = args,
         memory = memory,

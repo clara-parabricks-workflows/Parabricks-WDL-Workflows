@@ -1,10 +1,12 @@
 version 1.2
 
+import "utils/ref_struct.wdl" as ref_struct
+
 task deepvariant {
 
     input {
         File bam
-        BwaIndex bwaIndex
+        ReferenceFiles ref
         Array[File]? interval_file
         File? pb_model_file
         File? proposed_variants
@@ -34,7 +36,7 @@ task deepvariant {
 
         pbrun \
             deepvariant \
-            --ref ~{bwaIndex.fasta} \
+            --ref ~{ref.fasta} \
             --in-bam ~{bam} \
             --out-variants "~{prefix}.vcf" \
             ~{interval_file_command} \

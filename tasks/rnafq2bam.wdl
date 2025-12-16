@@ -1,12 +1,11 @@
 version 1.2
-# Copyright 2025 NVIDIA CORPORATION & AFFILIATES
 
-# Parabricks rnafq2bam - FASTQ to RNA BAM
+import "utils/ref_struct.wdl" as ref_struct
 
 task rnafq2bam {
     input {
         Array[File] reads
-        BwaIndex bwaIndex
+        ReferenceFiles ref
         Array[File]? interval_file
         Array[String]? args
         Int memory
@@ -30,7 +29,7 @@ task rnafq2bam {
 
         pbrun \
             rnafq2bam \
-            --ref ~{bwaIndex.fasta} \
+            --ref ~{ref.fasta} \
             ~{in_fq_command} \
             --out-bam "~{prefix}.~{extension_bam}" \
             ~{interval_file_command} \
@@ -53,6 +52,9 @@ task rnafq2bam {
     hints { 
         gpu: num_gpus 
     }
-    
-    meta { author: "Gary Burnett (gburnett@nvidia.com)" }
+
+    meta { 
+        author: "Gary Burnett (gburnett@nvidia.com)" 
+        description: "NVIDIA Parabricks GPU accelerated RNA FASTQ to BAM"
+    }
 }

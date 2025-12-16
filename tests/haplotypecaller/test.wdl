@@ -6,7 +6,7 @@ workflow haplotypecaller_test {
 
     input {
         File bam
-        BwaIndex bwaIndex
+        ReferenceFiles ref
         Array[File]? interval_file
         Array[File]? known_sites
         Array[String]? args
@@ -18,7 +18,7 @@ workflow haplotypecaller_test {
 
     call haplotypecaller.haplotypecaller {
         bam = bam,
-        bwaIndex = bwaIndex,
+        ref = ref,
         interval_file = interval_file,
         known_sites = known_sites,
         args = args,
