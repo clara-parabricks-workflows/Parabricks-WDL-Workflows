@@ -33,15 +33,11 @@ Hint: If OpenSSL issues arise, then users may need to run `sudo apt install libs
 
 ## Downloading the test data 
 
-Download the entire dataset: 
+Download the entire test dataset: 
 
 `make` 
 
-Download only the reference data: 
-
-`make ref` 
-
-Download only data for individual tools: 
+Download only data for individual tests: 
 
 `make fq2bam` 
 
