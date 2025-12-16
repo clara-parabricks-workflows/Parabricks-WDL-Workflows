@@ -50,9 +50,3 @@ task mutectcaller {
         description: "NVIDIA Parabricks GPU accelerated MutectCaller"
     }
 }
-
-struct BwaIndex {
-    File fasta
-    File fasta_fai
-    Array[File] indexFiles
-}
