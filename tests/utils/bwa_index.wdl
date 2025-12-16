@@ -9,13 +9,11 @@ task bwa_index {
         String container = "biocontainers/bwa:v0.7.17_cv1"
     }
 
-    String prefix = basename(fasta)
-
     command <<<
         set -e
 
         # Use baseline bwa to build the index files
-        bwa index ~{sep(" ", select_first([args, []]))} ~{fasta}
+        bwa index "~{sep(" ", select_first([args, []]))}" "~{fasta}"
     >>>
 
     output {
@@ -25,8 +23,7 @@ task bwa_index {
         File bwt = "${fasta}.bwt"
         File pac = "${fasta}.pac"
         File sa  = "${fasta}.sa"
-        Array[File] indexFiles = [amb, ann, bwt, pac, sa]
-        File fastaFile = fasta
+        Array[File] index_files = [amb, ann, bwt, pac, sa]
     }
 
     requirements {
@@ -35,7 +32,18 @@ task bwa_index {
         memory: memory
     }
 
-    meta { author: "Gary Burnett (gburnett@nvidia.com)" }
+    meta { 
+        author: "Gary Burnett (gburnett@nvidia.com)" 
+        description: "Creates BWA index files for a reference FASTA using bwa index"
+        outputs: {
+            amb: "BWA index .amb file",
+            ann: "BWA index .ann file",
+            bwt: "BWA index .bwt file",
+            pac: "BWA index .pac file",
+            sa:  "BWA index .sa file",
+            index_files: "Array of BWA index files"
+        }
+    }
 
     parameter_meta {
         fasta: "Reference FASTA file to index"
@@ -44,9 +52,4 @@ task bwa_index {
         num_cpus: "Number of CPU threads"
         container: "Container image URI"
     }
-}
-
-struct BwaIndex {
-    File fasta
-    Array[File] indexFiles
 }

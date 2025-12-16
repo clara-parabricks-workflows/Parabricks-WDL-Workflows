@@ -4,6 +4,7 @@ import "../../tasks/rnafq2bam.wdl" as rnafq2bam
 
 struct BwaIndex {
     File fasta
+    File fasta_fai
     Array[File] indexFiles
 }
 

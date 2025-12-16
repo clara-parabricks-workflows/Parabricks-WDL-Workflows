@@ -91,5 +91,6 @@ task deepvariant {
 
 struct BwaIndex {
     File fasta
+    File fasta_fai
     Array[File] indexFiles
 }

@@ -1,9 +1,11 @@
 version 1.2
 
+import "utils/ref_struct.wdl" as ref_struct
+
 task fq2bam {
     input {
         Array[File] reads
-        BwaIndex bwaIndex
+        ReferenceFiles ref
         Array[File]? interval_file
         Array[File]? known_sites
         String output_fmt
@@ -40,15 +42,15 @@ task fq2bam {
 
         pbrun \
             fq2bam \
-            --ref ~{bwaIndex.fasta} \
-            ~{in_fq_command} \
+            --ref "~{ref.fasta}" \
+            "~{in_fq_command}" \
             --out-bam "~{prefix}.~{extension_bam}" \
-            ~{known_sites_command} \
-            ~{known_sites_output_cmd} \
-            ~{interval_file_command} \
+            "~{known_sites_command}" \
+            "~{known_sites_output_cmd}" \
+            "~{interval_file_command}" \
             --num-gpus ~{num_gpus} \
             --monitor-usage \
-            ~{sep(" ", select_first([args, []]))}
+            "~{sep(" ", select_first([args, []]))}"
         >>>
 
     output {
@@ -73,12 +75,18 @@ task fq2bam {
     meta {
         author: "Gary Burnett (gburnett@nvidia.com)"
         description: "Converts FASTQ files to BAM/CRAM format using NVIDIA Parabricks fq2bam"
+        outputs: {
+            bam: "Aligned BAM/CRAM file",
+            bai: "Index file for the BAM/CRAM",
+            bqsr_table: "Optional BQSR table if known sites are provided",
+            qc_metrics: "Optional QC metrics directory if specified in args",
+            duplicate_metrics: "Optional duplicate metrics file if specified in args"
+        }
     }
 
     parameter_meta {
-        # inputs
         reads: {description: "Array of FASTQ files to align", category: "required"}
-        bwaIndex: "Reference genome FASTA file"
+        ref: "Struct containing Reference files (fasta, fasta.fai, bwa_index)"
         interval_file: "Optional interval file for targeted regions (can be used multiple times)"
         known_sites: "Optional array of known variant sites for BQSR (can be used multiple times)"
         output_fmt: "Output format: 'bam' or 'cram'"
@@ -88,17 +96,5 @@ task fq2bam {
         num_gpus: "Number of GPUs to use"
         num_cpus: "Number of CPU threads"
         container: "Container image URI"
-
-        # outputs
-        bam: "Aligned BAM/CRAM file"
-        bai: "Index file for the BAM/CRAM"
-        bqsr_table: "Optional BQSR table if known sites are provided"
-        qc_metrics: "Optional QC metrics directory if specified in args"
-        duplicate_metrics: "Optional duplicate metrics file if specified in args"
     }
-}
-
-struct BwaIndex {
-    File fasta
-    Array[File] indexFiles
 }

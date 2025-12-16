@@ -1,7 +1,8 @@
 version 1.2
 
 import "../../tasks/fq2bam.wdl" as fq2bam
-import "../../tasks/utils/bwa_index.wdl" as bwa_index
+import "../utils/bwa_index.wdl" as bwa_index
+import "../utils/samtools_faidx.wdl" as samtools_faidx
 
 workflow fq2bam_test {
     input {
@@ -22,9 +23,17 @@ workflow fq2bam_test {
         fasta = fasta
     }
 
+    call samtools_faidx.samtools_faidx {
+        fasta = fasta
+    }
+
     call fq2bam.fq2bam {
         reads = read_lines(sample_sheet),
-        bwaIndex = BwaIndex { fasta: bwa_index.fastaFile, indexFiles: bwa_index.indexFiles },
+        ref = ReferenceFiles { 
+            fasta: fasta, 
+            fasta_fai: samtools_faidx.fai,
+            bwa_index: bwa_index.index_files 
+        },
         interval_file = interval_file,
         known_sites = known_sites, 
         output_fmt = output_fmt, 
@@ -47,12 +56,18 @@ workflow fq2bam_test {
     meta {
         author: "Gary Burnett (gburnett@nvidia.com)"
         description: "Converts FASTQ files to BAM/CRAM format using NVIDIA Parabricks fq2bam"
+        outputs: {
+            bam: "Aligned BAM/CRAM file",
+            bai: "Index file for the BAM/CRAM",
+            bqsr_table: "Optional BQSR table if known sites are provided",
+            qc_metrics: "Optional QC metrics directory if specified in args",
+            duplicate_metrics: "Optional duplicate metrics file if specified in args"
+        }
     }
 
     parameter_meta {
-        # inputs 
         sample_sheet: "Sample sheet of FASTQ files to align"
-        bwaIndex: "Reference genome FASTA file"
+        fasta: "Reference genome FASTA file"
         interval_file: "Optional interval file for targeted regions (can be used multiple times)"
         known_sites: "Optional array of known variant sites for BQSR (can be used multiple times)"
         output_fmt: "Output format: 'bam' or 'cram'"
@@ -62,12 +77,5 @@ workflow fq2bam_test {
         num_gpus: "Number of GPUs to use"
         num_cpus: "Number of CPU threads"
         container: "Container image URI"
-
-        # outputs
-        bam: "Aligned BAM/CRAM file"
-        bai: "Index file for the BAM/CRAM"
-        bqsr_table: "Optional BQSR table if known sites are provided"
-        qc_metrics: "Optional QC metrics directory if specified in args"
-        duplicate_metrics: "Optional duplicate metrics file if specified in args"
     }
 }

@@ -1,7 +1,4 @@
 version 1.2
-# Copyright 2025 NVIDIA CORPORATION & AFFILIATES
-
-# bwameth index - build index files suitable for bwa-meth (fall back to bwa index when bwameth.py is not available)
 
 task bwameth_index {
     input {
@@ -50,6 +47,7 @@ task bwameth_index {
 
 struct BwaIndex {
     File fasta
+    File fasta_fai
     Array[File] indexFiles
 }
 
