@@ -1,7 +1,4 @@
 version 1.2
-# Copyright 2025 NVIDIA CORPORATION & AFFILIATES
-
-# Parabricks StarFusion - fusion detection
 
 task starfusion {
     input {
