@@ -40,17 +40,24 @@ task fq2bam {
     command <<<
         set -e
 
+        # Make sure the reference and index files are in the same directory 
+        ref_dir=$(dirname ~{ref.fasta})
+        ln -s ~{ref.fasta_fai} ${ref_dir}/$(basename ~{ref.fasta_fai})
+        for bwa_file in ~{sep(" ", ref.bwa_index)}; do
+            ln -s "$bwa_file" ${ref_dir}/$(basename "$bwa_file")
+        done
+
         pbrun \
             fq2bam \
-            --ref "~{ref.fasta}" \
-            "~{in_fq_command}" \
-            --out-bam "~{prefix}.~{extension_bam}" \
-            "~{known_sites_command}" \
-            "~{known_sites_output_cmd}" \
-            "~{interval_file_command}" \
+            --ref ~{ref.fasta} \
+            ~{in_fq_command} \
+            --out-bam ~{prefix}.~{extension_bam} \
+            ~{known_sites_command} \
+            ~{known_sites_output_cmd} \
+            ~{interval_file_command} \
             --num-gpus ~{num_gpus} \
             --monitor-usage \
-            "~{sep(" ", select_first([args, []]))}"
+            ~{sep(" ", select_first([args, []]))}
         >>>
 
     output {

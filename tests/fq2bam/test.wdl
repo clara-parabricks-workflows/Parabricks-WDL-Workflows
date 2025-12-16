@@ -19,11 +19,11 @@ workflow fq2bam_test {
         String container
     }
 
-    call bwa_index.bwa_index {
+    call samtools_faidx.samtools_faidx {
         fasta = fasta
     }
 
-    call samtools_faidx.samtools_faidx {
+    call bwa_index.bwa_index {
         fasta = fasta
     }
 

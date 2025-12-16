@@ -6,7 +6,6 @@
 REF_DIR=../data/ref
 mkdir -p ${REF_DIR}
 
-ref_files="{fasta}"
-file_url="https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.${ref_files}"
+file_url="https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta"
 
 curl $file_url -C - -O --output-dir ${REF_DIR}

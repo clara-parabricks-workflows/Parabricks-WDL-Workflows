@@ -1,6 +1,6 @@
 {
     "fq2bam_test.sample_sheet": "samplesheet.csv",
-    "fq2bam_test.fasta": "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta",
+    "fq2bam_test.fasta": "/home/gburnett/parabricks-wdl/data/ref/genome.fasta",
     "fq2bam_test.interval_file": null,
     "fq2bam_test.known_sites": null,
     "fq2bam_test.output_fmt": "bam",
