@@ -8,21 +8,25 @@ task bwa_index {
         Int num_cpus = 4
         String container = "biocontainers/bwa:v0.7.17_cv1"
     }
+    
+    # Use a local symlink to avoid writing into the read-only input mount
+    String local = basename(fasta)
 
     command <<<
         set -e
 
-        # Use baseline bwa to build the index files
-        bwa index "~{sep(" ", select_first([args, []]))}" "~{fasta}"
+        # Create or update a symlink in the task working dir and index that
+        ln -sf "~{fasta}" "~{local}"
+        bwa index ~{sep(" ", select_first([args, []]))} "~{local}"
     >>>
 
     output {
-        # BWA produces .amb, .ann, .bwt, .pac, .sa files next to the FASTA
-        File amb = "${fasta}.amb"
-        File ann = "${fasta}.ann"
-        File bwt = "${fasta}.bwt"
-        File pac = "${fasta}.pac"
-        File sa  = "${fasta}.sa"
+        # BWA produces .amb, .ann, .bwt, .pac, .sa files next to the local symlink
+        File amb = "${local}.amb"
+        File ann = "${local}.ann"
+        File bwt = "${local}.bwt"
+        File pac = "${local}.pac"
+        File sa  = "${local}.sa"
         Array[File] index_files = [amb, ann, bwt, pac, sa]
     }
 

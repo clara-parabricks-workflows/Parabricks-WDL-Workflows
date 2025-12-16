@@ -59,7 +59,9 @@ task fq2bammeth {
         gpu: true
     }
 
-    hints { gpu: num_gpus }
+    hints { 
+        gpu: num_gpus 
+    }
 
     meta {
         author: "Gary Burnett (gburnett@nvidia.com)"
@@ -80,10 +82,4 @@ task fq2bammeth {
         container: "Container image URI"
         bam: "Aligned BAM/CRAM file"
     }
-}
-
-struct BwaIndex {
-    File fasta
-    File fasta_fai
-    Array[File] indexFiles
 }

@@ -1,8 +1,8 @@
 version 1.2
 
 import "../../tasks/fq2bam.wdl" as fq2bam
-import "../utils/bwa_index.wdl" as bwa_index
-import "../utils/samtools_faidx.wdl" as samtools_faidx
+import "../preprocessing/bwa_index.wdl" as bwa_index
+import "../preprocessing/samtools_faidx.wdl" as samtools_faidx
 
 workflow fq2bam_test {
     input {

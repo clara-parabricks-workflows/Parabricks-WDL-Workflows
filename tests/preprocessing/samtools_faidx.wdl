@@ -8,15 +8,20 @@ task samtools_faidx {
         Int num_cpus = 4
         String container = "biocontainers/samtools:v1.9-4-deb_cv1"
     }
+    
+    # Use a local symlink to avoid writing into the read-only input mount
+    String local = basename(fasta)
 
     command <<<
         set -e
 
-        samtools faidx "~{fasta}" "~{sep(" ", select_first([args, []]))}"
+        # Create or update a symlink in the task working dir and index that
+        ln -sf "~{fasta}" "~{local}"
+        samtools faidx "~{local}" ~{sep(" ", select_first([args, []]))}
     >>>
 
     output {
-        File fai = "${fasta}.fai"
+        File fai = "${local}.fai"
     }
 
     requirements {

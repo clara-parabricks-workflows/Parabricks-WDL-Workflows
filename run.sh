@@ -1,3 +1,3 @@
 #!/bin/bash 
 
-sprocket run ./tests/fq2bam/fq2bam.wdl ./tests/fq2bam/params.json 
+sprocket run ./tests/fq2bam/test.wdl ./tests/fq2bam/params.json 

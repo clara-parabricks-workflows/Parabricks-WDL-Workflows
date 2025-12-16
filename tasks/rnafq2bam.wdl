@@ -49,13 +49,10 @@ task rnafq2bam {
         memory: memory
         gpu: true
     }
-    hints { gpu: num_gpus }
 
+    hints { 
+        gpu: num_gpus 
+    }
+    
     meta { author: "Gary Burnett (gburnett@nvidia.com)" }
-}
-
-struct BwaIndex {
-    File fasta
-    File fasta_fai
-    Array[File] indexFiles
 }
