@@ -4,45 +4,43 @@ This is a repository of WDL workflow files for popular Parabricks tools.
 
 ## Quick Start 
 
-Download the test data: 
+Install Sprocket
+
+```
+curl https://sh.rustup.rs -sSf | sh
+cargo install sprocket --locked
+```
+
+Download data and run all tests 
 
 ```
 make
 ```
 
-Run the tests: 
+## Full Tutorial 
 
-```
-```
+### Installing Sprocket WDL Engine
 
-## Requirements 
-
-Install [Rust](https://rust-lang.org/) using [rustup](https://rustup.rs/). This will also install [Cargo](https://doc.rust-lang.org/cargo/), the Rust package manager. 
+Install [Rust](https://rust-lang.org/) using [rustup](https://rustup.rs/). This will also install [Cargo](https://doc.rust-lang.org/cargo/), the Rust package manager 
 
 ```
 curl https://sh.rustup.rs -sSf | sh
 ```
 
-Install [Sprocket](https://sprocket.bio/) using Cargo. 
+Install [Sprocket](https://sprocket.bio/) using Cargo 
 
 ```
 cargo install sprocket --locked
 ```
 
-Hint: If OpenSSL issues arise, then users may need to run `sudo apt install libssl-dev`. 
+Hint: If OpenSSL issues arise, then users may need to run `sudo apt install libssl-dev`
 
-## Downloading the test data 
+### Running the tests 
 
-Download the entire test dataset: 
+Download data and run all tests 
 
 `make` 
 
-Download only data for individual tests: 
+Download data and run individual tests (Ex. fq2bam) 
 
 `make fq2bam` 
-
-## Running the tests 
-
-```
-sprocket run ./fq2bam/tests/test.wdl ./fq2bam/tests/params.json
-```
