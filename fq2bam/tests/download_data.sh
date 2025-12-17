@@ -15,4 +15,4 @@ curl $file_url -C - -o ${DATA_DIR}/test.fastq.gz
 
 # Download reference 
 file_url="https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta"
-curl $file_url -C - -O --output-dir ${REF_DIR}
+curl $file_url -C - -o ${REF_DIR}/genome.fasta
