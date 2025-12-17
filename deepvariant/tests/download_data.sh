@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-# This script downloads the data files for fq2bam into $DATA_DIR
+# This script downloads the data files for deepvariant into $DATA_DIR
 # It resumes interrupted file downloads and doesn't download files if they already exist
 
 DATA_DIR=../../data
