@@ -1,17 +1,6 @@
 {
     "deepvariant_test.bam": "/home/gburnett/parabricks-wdl/data/test.bam",
-    "deepvariant_test.bwaIndex": {
-        "fastaFile": "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta",
-        "indexFiles": [
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.fai",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.amb",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.ann",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.bwt",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.pac",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.sa",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.dict"
-        ]
-    },
+    "deepvariant_test.fasta": "/home/gburnett/parabricks-wdl/data/ref/genome.fasta",
     "deepvariant_test.interval_file": null,
     "deepvariant_test.pb_model_file": null,
     "deepvariant_test.proposed_variants": null,
