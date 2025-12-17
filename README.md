@@ -19,7 +19,7 @@ make
 
 ## Full Tutorial 
 
-### Installing Sprocket WDL Engine
+### Installing Sprocket 
 
 Install [Rust](https://rust-lang.org/) using [rustup](https://rustup.rs/). This will also install [Cargo](https://doc.rust-lang.org/cargo/), the Rust package manager 
 
