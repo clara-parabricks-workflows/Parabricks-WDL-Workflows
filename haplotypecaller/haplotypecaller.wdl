@@ -29,6 +29,13 @@ task haplotypecaller {
     command <<< 
         set -e
 
+        # Make sure the reference and index files are in the same directory 
+        ref_dir=$(dirname ~{ref.fasta})
+        ln -s ~{ref.fasta_fai} ${ref_dir}/$(basename ~{ref.fasta_fai})
+        for bwa_file in ~{sep(" ", ref.bwa_index)}; do
+            ln -s "$bwa_file" ${ref_dir}/$(basename "$bwa_file")
+        done
+
         pbrun \
             haplotypecaller \
             --ref ~{ref.fasta} \
@@ -58,10 +65,12 @@ task haplotypecaller {
     meta {
         author: "Gary Burnett (gburnett@nvidia.com)"
         description: "NVIDIA Parabricks GPU accelerated HaplotypeCaller"
+        outputs: {
+            vcf: "VCF file produced by HaplotypeCaller"
+        }
     }
 
     parameter_meta {
-        # inputs
         bam: "The input BAM file"
         bwaIndex: "Reference genome FASTA file"
         interval_file: "Optional interval file for targeted regions (can be used multiple times)"
@@ -71,9 +80,6 @@ task haplotypecaller {
         num_gpus: "Number of GPUs to use"
         num_cpus: "Number of CPU threads"
         container: "Container image URI"
-
-        # outputs
-        vcf: "VCF file produced by HaplotypeCaller"
     }
 
 }

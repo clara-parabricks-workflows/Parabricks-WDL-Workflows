@@ -1,12 +1,14 @@
 version 1.2
 
 import "../haplotypecaller.wdl" as haplotypecaller
+import "../../shared/bwa_index.wdl" as bwa_index
+import "../../shared/samtools_faidx.wdl" as samtools_faidx
 
 workflow haplotypecaller_test {
 
     input {
         File bam
-        ReferenceFiles ref
+        File fasta
         Array[File]? interval_file
         Array[File]? known_sites
         Array[String]? args
@@ -16,9 +18,21 @@ workflow haplotypecaller_test {
         String container
     }
 
+    call samtools_faidx.samtools_faidx {
+        fasta = fasta
+    }
+
+    call bwa_index.bwa_index {
+        fasta = fasta
+    }
+
     call haplotypecaller.haplotypecaller {
         bam = bam,
-        ref = ref,
+        ref = ReferenceFiles { 
+            fasta: fasta, 
+            fasta_fai: samtools_faidx.fai,
+            bwa_index: bwa_index.index_files 
+        },
         interval_file = interval_file,
         known_sites = known_sites,
         args = args,
