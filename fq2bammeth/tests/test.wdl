@@ -1,11 +1,12 @@
 version 1.2
 
 import "../fq2bammeth.wdl" as fq2bammeth
+import "../../shared/bwameth_index.wdl" as bwameth_index
 
 workflow fq2bammeth_test {
     input {
         File sample_sheet
-        ReferenceFiles ref
+        File fasta
         Array[File]? interval_file
         Array[File]? known_sites
         String output_fmt
@@ -17,9 +18,16 @@ workflow fq2bammeth_test {
         String container
     }
 
+    call bwameth_index.bwameth_index {
+        fasta = fasta
+    }
+
     call fq2bammeth.fq2bammeth {
         reads = read_lines(sample_sheet),
-        ref = ref,
+        ref = ReferenceFiles { 
+            fasta: fasta, 
+            bwa_index: bwameth_index.indexFiles 
+        },
         interval_file = interval_file,
         known_sites = known_sites,
         output_fmt = output_fmt,
@@ -37,5 +45,27 @@ workflow fq2bammeth_test {
         File? meth_metrics = fq2bammeth.meth_metrics
     }
 
-    meta { author: "Gary Burnett (gburnett@nvidia.com)" }
+    meta { 
+        author: "Gary Burnett (gburnett@nvidia.com)" 
+        description: "Converts FASTQ files to BAM/CRAM format with methylation metrics using NVIDIA Parabricks fq2bammeth"
+        outputs: {
+            bam: "Aligned methylation-aware BAM/CRAM file", 
+            bai: "BAM/CRAM index file",
+            meth_metrics: "Methylation metrics file (if requested)"
+        }
+    }
+
+    parameter_meta {
+        sample_sheet: "Path to a sample sheet containing FASTQ file paths"
+        fasta: "Reference genome FASTA file"
+        interval_file: "Optional interval files to restrict alignment"
+        known_sites: "Optional known sites files for methylation calling"
+        output_fmt: "Output format: 'bam' or 'cram'"
+        single_ended: "Boolean indicating if the reads are single-ended"
+        args: "Additional command-line arguments for fq2bammeth"
+        memory: "Amount of memory to allocate (e.g., '16 GB')"
+        num_gpus: "Number of GPUs to use"
+        num_cpus: "Number of CPU cores to allocate"
+        container: "Docker container image to use"
+    }
 }

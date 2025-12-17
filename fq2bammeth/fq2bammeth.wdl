@@ -36,11 +36,17 @@ task fq2bammeth {
     command <<<
         set -e
 
+        # Make sure the reference and index files are in the same directory 
+        ref_dir=$(dirname ~{ref.fasta})
+        for bwa_file in ~{sep(" ", ref.bwa_index)}; do
+            ln -s "$bwa_file" ${ref_dir}/$(basename "$bwa_file")
+        done
+
         pbrun \
-            fq2bammeth \
+            fq2bam_meth \
             --ref ~{ref.fasta} \
             ~{in_fq_command} \
-            --out-bam "~{prefix}.~{extension_bam}" \
+            --out-bam ~{prefix}.~{extension_bam} \
             ~{known_sites_command} \
             ~{interval_file_command} \
             --num-gpus ~{num_gpus} \

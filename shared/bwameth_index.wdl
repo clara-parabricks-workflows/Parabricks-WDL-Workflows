@@ -2,27 +2,33 @@ version 1.2
 
 task bwameth_index {
     input {
-        File ref_fasta
+        File fasta
         Array[String]? args = []
         Int memory = 8
         Int num_cpus = 4
         String container = "josousa/bwa-meth:0.2.7"
     }
 
+    # Use a local symlink to avoid writing into the read-only input mount
+    String local = basename(fasta)
+
     command <<<
         set -e
 
-        bwameth.py index ~{ref_fasta} ~{sep(" ", select_first([args, []]))}
+        # Create or update a symlink in the task working dir and index that
+        ln -sf "~{fasta}" "~{local}"
+
+        bwameth.py index ~{local} ~{sep(" ", select_first([args, []]))}
     >>>
 
     output {
-        File amb = "${ref_fasta}.amb"
-        File ann = "${ref_fasta}.ann"
-        File bwt = "${ref_fasta}.bwt"
-        File pac = "${ref_fasta}.pac"
-        File sa  = "${ref_fasta}.sa"
-        Array[File] indexFiles = [amb, ann, bwt, pac, sa]
-        File fastaFile = ref_fasta
+        File fasta_c2t = "${local}.bwameth.c2t"
+        File amb = "${local}.bwameth.c2t.amb"
+        File ann = "${local}.bwameth.c2t.ann"
+        File bwt = "${local}.bwameth.c2t.bwt"
+        File pac = "${local}.bwameth.c2t.pac"
+        File sa  = "${local}.bwameth.c2t.sa"
+        Array[File] indexFiles = [fasta_c2t, amb, ann, bwt, pac, sa]
     }
 
     requirements {
@@ -34,43 +40,22 @@ task bwameth_index {
     meta { 
         author: "Gary Burnett (gburnett@nvidia.com)"
         description: "Creates index files for use with bwa-meth or BWA" 
+        outputs: {
+            fasta: "BWA-meth indexed FASTA file",
+            amb: "BWA-meth .amb index file",
+            ann: "BWA-meth .ann index file",
+            bwt: "BWA-meth .bwt index file",
+            pac: "BWA-meth .pac index file",
+            sa: "BWA-meth .sa index file",
+            indexFiles: "Array of BWA-meth index files"
+        }
     }
 
     parameter_meta {
-        ref_fasta: "Reference FASTA file to index"
+        fasta: "Reference FASTA file to index"
         args: "Optional additional arguments for indexing tool"
         memory: "Memory in GB"
         num_cpus: "Number of CPU threads"
         container: "Container image URI"
     }
-}
-
-struct BwaIndex {
-    File fasta
-    File fasta_fai
-    Array[File] indexFiles
-}
-
-workflow bwameth_index_workflow {
-    input {
-        File ref_fasta
-        Array[String]? args
-        Int memory
-        Int num_cpus
-        String container
-    }
-
-    call bwameth_index {
-        ref_fasta = ref_fasta,
-        args = args,
-        memory = memory,
-        num_cpus = num_cpus,
-        container = container
-    }
-
-    output {
-        
-    }
-
-    meta { author: "Gary Burnett (gburnett@nvidia.com)" }
 }
