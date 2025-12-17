@@ -44,3 +44,7 @@ Download data and run all tests
 Download data and run individual tests (Ex. fq2bam) 
 
 `make fq2bam` 
+
+## Future Work 
+
+* Update test data to use shared files when possible (Ex. All germline use the same reference)
