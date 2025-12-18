@@ -1,5 +1,5 @@
-WORKFLOWS_DIR := .
-SUBDIRS := $(shell find $(WORKFLOWS_DIR) -mindepth 1 -maxdepth 1 -type d)
+ROOT_DIR := .
+SUBDIRS := $(shell find $(ROOT_DIR) -mindepth 1 -maxdepth 1 -type d)
 SUBDIR_NAMES := $(notdir $(SUBDIRS))
 DOWNLOAD_DATA_SCRIPT := download_data.sh
 
@@ -11,11 +11,14 @@ run-all: $(SUBDIR_NAMES)
 
 $(SUBDIR_NAMES):
 	@echo "Downloading sample files for $@..."
-	@if [ -f $(WORKFLOWS_DIR)/$@/tests/$(DOWNLOAD_DATA_SCRIPT) ]; then \
-		cd $(WORKFLOWS_DIR)/$@/tests && \
+	@if [ -f $(ROOT_DIR)/$@/tests/$(DOWNLOAD_DATA_SCRIPT) ]; then \
+		cd $(ROOT_DIR)/$@/tests && \
 		bash $(DOWNLOAD_DATA_SCRIPT) && \
 		sprocket run test.wdl params.json; \
 	fi
+
+clean: 
+	rm -rf $(ROOT_DIR)/data
 
 ifneq ($(MAKECMDGOALS),)
   SUBDIR_NAMES := $(filter $(MAKECMDGOALS), $(SUBDIR_NAMES))
