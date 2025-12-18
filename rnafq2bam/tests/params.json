@@ -1,22 +1,14 @@
 {
-    "parabricks_rnafq2bam.sample_sheet": "../fq2bam/samplesheet.csv",
-    "parabricks_rnafq2bam.bwaIndex": {
-        "fastaFile": "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta",
-        "indexFiles": [
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.fai",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.amb",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.ann",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.bwt",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.pac",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.fasta.sa",
-            "/home/gburnett/parabricks-wdl/data/ref/Homo_sapiens_assembly38.dict"
-        ]
-    },
-    "parabricks_rnafq2bam.interval_file": null,
-    "parabricks_rnafq2bam.args": null,
-    "parabricks_rnafq2bam.prefix": "test",
-    "parabricks_rnafq2bam.memory": 192,
-    "parabricks_rnafq2bam.num_gpus": 2,
-    "parabricks_rnafq2bam.num_cpus": 16,
-    "parabricks_rnafq2bam.container": "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-2"
+    "rnafq2bam_test.sample_sheet": "samplesheet.csv",
+    "rnafq2bam_test.fasta": "/home/gburnett/parabricks-wdl/data/ref/minigenome.fa",
+    "rnafq2bam_test.output_fmt": "bam",
+    "rnafq2bam_test.single_ended": true,
+    "rnafq2bam_test.qc_metrics_bool": false,
+    "rnafq2bam_test.duplicate_metrics_bool": false,
+    "rnafq2bam_test.prefix": "test",
+    "rnafq2bam_test.args": null,
+    "rnafq2bam_test.memory": 192,
+    "rnafq2bam_test.num_gpus": 2,
+    "rnafq2bam_test.num_cpus": 16,
+    "rnafq2bam_test.container": "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-2"
 }

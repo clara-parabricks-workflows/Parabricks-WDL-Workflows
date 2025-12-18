@@ -1,9 +1,9 @@
 version 1.2
 
-task star_index {
+task star_genomegenerate {
     input {
-        File ref_fasta
-        File? ref_gtf
+        File fasta
+        File? gtf
         String genome_dir = "star_genome"
         Array[String]? args = []
         Int memory = 32
@@ -11,23 +11,21 @@ task star_index {
         String container = "biocontainers/rna-star:v2.7.0adfsg-1-deb_cv1" 
     }
 
-    String prefix = genome_dir
-
     command <<<
         set -e
 
         mkdir -p ~{genome_dir}
         STAR --runMode genomeGenerate \
              --genomeDir ~{genome_dir} \
-             --genomeFastaFiles ~{ref_fasta} \
+             --genomeFastaFiles ~{fasta} \
              --runThreadN ~{num_cpus} \
-             ~{if defined(ref_gtf) then "--sjdbGTFfile " + ref_gtf else ""} \
+             ~{if defined(gtf) then "--sjdbGTFfile " + gtf else ""} \
              ~{sep(" ", select_first([args, []]))}
 
     >>>
 
     output {
-        Directory star_genome_dir = genome_dir
+        Directory genome_lib_dir = genome_dir
     }
 
     requirements {
@@ -39,11 +37,14 @@ task star_index {
     meta { 
         author: "Gary Burnett (gburnett@nvidia.com)" 
         description: "Build STAR genome index using baseline STAR" 
+        outputs: {
+            genome_lib_dir: "STAR genome index directory"
+        }
     }
 
     parameter_meta {
-        ref_fasta: "Reference FASTA file to build STAR index"
-        ref_gtf: "Optional GTF file to incorporate splice junctions"
+        fasta: "Reference FASTA file to build STAR index"
+        gtf: "Optional GTF file to incorporate splice junctions"
         genome_dir: "Output STAR genome directory name"
         args: "Optional additional arguments for STAR"
         memory: "Memory in GB"
