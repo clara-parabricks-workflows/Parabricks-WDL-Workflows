@@ -37,10 +37,14 @@ task fq2bammeth {
         set -e
 
         # Make sure the reference and index files are in the same directory 
+        # Note: This section could be cleaned up in the future 
         ref_dir=$(dirname ~{ref.fasta})
         for bwa_file in ~{sep(" ", ref.bwa_index)}; do
             ln -s "$bwa_file" ${ref_dir}/$(basename "$bwa_file")
         done
+
+        index_dir=$(dirname ~{ref.bwa_index[0]})
+        ln -s ~{ref.fasta} ${index_dir}/$(basename ~{ref.fasta})
 
         pbrun \
             fq2bam_meth \
