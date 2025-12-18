@@ -12,6 +12,8 @@ workflow fq2bam_test {
         Array[File]? known_sites
         String output_fmt
         Boolean single_ended
+        Boolean qc_metrics_bool
+        Boolean duplicate_metrics_bool
         String prefix
         Array[String]? args
         Int memory
@@ -39,6 +41,8 @@ workflow fq2bam_test {
         known_sites = known_sites, 
         output_fmt = output_fmt, 
         single_ended = single_ended, 
+        qc_metrics_bool = qc_metrics_bool,
+        duplicate_metrics_bool = duplicate_metrics_bool,
         prefix = prefix,
         args = args, 
         memory = memory, 
@@ -51,7 +55,7 @@ workflow fq2bam_test {
         File bam = fq2bam.bam
         File bai = fq2bam.bai
         File? bqsr_table = fq2bam.bqsr_table
-        File? qc_metrics = fq2bam.qc_metrics
+        Directory? qc_metrics = fq2bam.qc_metrics
         File? duplicate_metrics = fq2bam.duplicate_metrics
     }
 
@@ -74,6 +78,8 @@ workflow fq2bam_test {
         known_sites: "Optional array of known variant sites for BQSR (can be used multiple times)"
         output_fmt: "Output format: 'bam' or 'cram'"
         single_ended: "Whether reads are single-ended"
+        qc_metrics_bool: "Boolean indicating if QC metrics should be generated"
+        duplicate_metrics_bool: "Boolean indicating if duplicate metrics should be generated"
         prefix: "Prefix for output files"
         args: "Optional additional arguments for pbrun"
         memory: "Memory in GB"

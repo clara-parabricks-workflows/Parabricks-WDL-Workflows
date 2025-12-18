@@ -5,6 +5,8 @@
     "fq2bam_test.known_sites": null,
     "fq2bam_test.output_fmt": "bam",
     "fq2bam_test.single_ended": true,
+    "fq2bam_test.qc_metrics_bool": false,
+    "fq2bam_test.duplicate_metrics_bool": false,
     "fq2bam_test.prefix": "test",
     "fq2bam_test.args": null,
     "fq2bam_test.memory": 192,

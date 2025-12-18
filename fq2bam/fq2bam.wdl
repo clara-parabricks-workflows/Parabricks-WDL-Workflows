@@ -10,6 +10,8 @@ task fq2bam {
         Array[File]? known_sites
         String output_fmt
         Boolean single_ended
+        Boolean qc_metrics_bool
+        Boolean duplicate_metrics_bool
         String prefix
         Array[String]? args
         Int memory
@@ -37,6 +39,14 @@ task fq2bam {
         sep(" ", prefix("--in-se-fq ", reads))
         else "--in-fq ${sep(" ", reads)}"
 
+    String qc_metrics_command = if qc_metrics_bool then 
+        "--out-qc-metrics-dir ${prefix}_qc_metrics"
+        else ""
+
+    String duplicate_metrics_command = if duplicate_metrics_bool then 
+        "--out-duplicate-metrics ${prefix}.duplicate-metrics.txt"
+        else ""
+
     command <<<
         set -e
 
@@ -55,6 +65,8 @@ task fq2bam {
             ~{known_sites_command} \
             ~{known_sites_output_cmd} \
             ~{interval_file_command} \
+            ~{qc_metrics_command} \
+            ~{duplicate_metrics_command} \
             --num-gpus ~{num_gpus} \
             --monitor-usage \
             ~{sep(" ", select_first([args, []]))}
@@ -64,8 +76,8 @@ task fq2bam {
         File bam = "${prefix}.${extension_bam}"
         File bai = "${prefix}.${extension_bam}.${extension_bam_index}"
         File? bqsr_table = if defined(known_sites) then "${prefix}.table" else None
-        File? qc_metrics = if contains(select_first([args,[]]), "--out-qc-metrics-dir") then "${prefix}_qc_metrics" else None
-        File? duplicate_metrics = if contains(select_first([args,[]]), "--out-duplicate-metrics") then "${prefix}.duplicate-metrics.txt" else None
+        Directory? qc_metrics = if qc_metrics_bool then "${prefix}_qc_metrics" else None
+        File? duplicate_metrics = if duplicate_metrics_bool then "${prefix}.duplicate-metrics.txt" else None
     }
 
     requirements {
