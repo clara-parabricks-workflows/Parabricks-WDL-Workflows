@@ -9,14 +9,13 @@ task haplotypecaller {
         ReferenceFiles ref
         Array[File]? interval_file
         Array[File]? known_sites
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
         Int num_cpus
         String container
     }
-
-    String prefix = "test"
 
     String interval_file_command = if defined(interval_file) then
         sep(" ", prefix("--interval-file ", select_first([interval_file, []])))
@@ -75,6 +74,7 @@ task haplotypecaller {
         bwaIndex: "Reference genome FASTA file"
         interval_file: "Optional interval file for targeted regions (can be used multiple times)"
         known_sites: "Optional array of known variant sites for BQSR (can be used multiple times)"
+        prefix: "Prefix for output files"
         args: "Optional additional arguments for pbrun"
         memory: "Memory in GB"
         num_gpus: "Number of GPUs to use"

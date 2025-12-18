@@ -11,6 +11,7 @@ task minimap2 {
         Array[File]? interval_file
         Array[File]? known_sites
         String output_fmt
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
@@ -18,7 +19,6 @@ task minimap2 {
         String container
     }
 
-    String prefix = "test"
     String extension_bam = output_fmt
     String extension_bam_index = if output_fmt == "cram" then "crai" else "bai"
 
@@ -100,6 +100,7 @@ task minimap2 {
         interval_file: "Optional interval file(s) to restrict alignment regions"
         known_sites: "Optional known sites file(s) for base recalibration"
         output_fmt: "Output format, either 'bam' or 'cram'"
+        prefix: "Prefix for output files"
         args: "Additional command line arguments to pass to minimap2"
         memory: "Amount of memory to allocate to the task (in MB)"
         num_gpus: "Number of GPUs to allocate to the task"

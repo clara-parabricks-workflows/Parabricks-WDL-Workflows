@@ -4,14 +4,13 @@ task starfusion {
     input {
         File sample_sheet
         File ref_fasta
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
         Int num_cpus
         String container
     }
-
-    String prefix = "test"
 
     command <<<
         set -e

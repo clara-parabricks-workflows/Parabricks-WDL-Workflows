@@ -6,6 +6,7 @@ workflow starfusion_test {
     input {
         File sample_sheet
         File ref_fasta
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
@@ -16,6 +17,7 @@ workflow starfusion_test {
     call starfusion.starfusion {
         sample_sheet = sample_sheet,
         ref_fasta = ref_fasta,
+        prefix = prefix,
         args = args,
         memory = memory,
         num_gpus = num_gpus,

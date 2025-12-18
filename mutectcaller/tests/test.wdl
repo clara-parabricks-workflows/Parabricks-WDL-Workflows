@@ -8,6 +8,7 @@ workflow mutectcaller_test {
         File normal_bam
         ReferenceFiles ref
         Array[File]? known_sites
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
@@ -20,6 +21,7 @@ workflow mutectcaller_test {
         normal_bam = normal_bam,
         ref = ref,
         known_sites = known_sites,
+        prefix = prefix,
         args = args,
         memory = memory,
         num_gpus = num_gpus,

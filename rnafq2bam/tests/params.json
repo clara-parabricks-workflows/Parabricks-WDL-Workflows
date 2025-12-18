@@ -14,6 +14,7 @@
     },
     "parabricks_rnafq2bam.interval_file": null,
     "parabricks_rnafq2bam.args": null,
+    "parabricks_rnafq2bam.prefix": "test",
     "parabricks_rnafq2bam.memory": 192,
     "parabricks_rnafq2bam.num_gpus": 2,
     "parabricks_rnafq2bam.num_cpus": 16,

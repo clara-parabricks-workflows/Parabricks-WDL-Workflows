@@ -12,6 +12,7 @@ workflow deepvariant_test {
         Array[File]? interval_file
         File? pb_model_file
         File? proposed_variants
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
@@ -37,6 +38,7 @@ workflow deepvariant_test {
         interval_file = interval_file,
         pb_model_file = pb_model_file,
         proposed_variants = proposed_variants,
+        prefix = prefix,
         args = args, 
         memory = memory, 
         num_gpus = num_gpus, 
@@ -64,6 +66,7 @@ workflow deepvariant_test {
         interval_file: "Optional interval file for targeted regions (can be used multiple times)"
         pb_model_file: "Optional Parabricks model file for DeepVariant"
         proposed_variants: "Optional proposed variants file (*.vcf.gz) for the make examples stage"
+        prefix: "Prefix for output files"
         args: "Optional additional arguments for pbrun"
         memory: "Memory in GB"
         num_gpus: "Number of GPUs to use"

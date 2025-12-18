@@ -10,14 +10,13 @@ task deepvariant {
         Array[File]? interval_file
         File? pb_model_file
         File? proposed_variants
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
         Int num_cpus
         String container
     }
-
-    String prefix = "test"
 
     String interval_file_command = if defined(interval_file) then
         sep(" ", prefix("--interval-file ", select_first([interval_file, []])))
@@ -82,6 +81,7 @@ task deepvariant {
         known_sites: "Optional array of known variant sites for BQSR (can be used multiple times)"
         output_fmt: "Output format: 'bam' or 'cram'"
         single_ended: "Whether reads are single-ended"
+        prefix: "Prefix for output files"
         args: "Optional additional arguments for pbrun"
         memory: "Memory in GB"
         num_gpus: "Number of GPUs to use"

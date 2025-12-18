@@ -6,6 +6,7 @@
     "minimap2_test.interval_file": null,
     "minimap2_test.known_sites": null,
     "minimap2_test.output_fmt": "bam",
+    "minimap2_test.prefix": "test",
     "minimap2_test.args": null,
     "minimap2_test.memory": 96,
     "minimap2_test.num_gpus": 2,

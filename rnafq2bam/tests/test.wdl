@@ -7,6 +7,7 @@ workflow rnafq2bam_test {
         File sample_sheet
         ReferenceFiles ref
         Array[File]? interval_file
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
@@ -18,6 +19,7 @@ workflow rnafq2bam_test {
         reads = read_lines(sample_sheet),
         ref = ref,
         interval_file = interval_file,
+        prefix = prefix
         args = args,
         memory = memory,
         num_gpus = num_gpus,

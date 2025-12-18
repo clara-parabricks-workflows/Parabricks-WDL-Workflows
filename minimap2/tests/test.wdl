@@ -13,6 +13,7 @@ workflow minimap2_test {
         Array[File]? interval_file
         Array[File]? known_sites
         String output_fmt
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
@@ -40,6 +41,7 @@ workflow minimap2_test {
         interval_file = interval_file,
         known_sites = known_sites,
         output_fmt = output_fmt,
+        prefix = prefix,
         args = args,
         memory = memory,
         num_gpus = num_gpus,
@@ -65,6 +67,7 @@ workflow minimap2_test {
         interval_file: "Optional interval file for targeted alignment"
         known_sites: "Optional known sites for BQSR"
         output_fmt: "Output format, either 'bam' or 'cram'"
+        prefix: "Prefix for output files"
         args: "Additional command-line arguments for minimap2"
         memory: "Memory allocation for the task (in MB)"
         num_gpus: "Number of GPUs to use"

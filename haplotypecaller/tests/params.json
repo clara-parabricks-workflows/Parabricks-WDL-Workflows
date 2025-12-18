@@ -4,6 +4,7 @@
     "haplotypecaller_test.interval_file": null,
     "haplotypecaller_test.known_sites": null,
     "haplotypecaller_test.args": null,
+    "haplotypecaller_test.prefix": "test",
     "haplotypecaller_test.memory": 192,
     "haplotypecaller_test.num_gpus": 2,
     "haplotypecaller_test.num_cpus": 16,

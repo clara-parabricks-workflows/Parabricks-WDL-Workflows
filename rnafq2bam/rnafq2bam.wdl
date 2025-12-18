@@ -6,7 +6,8 @@ task rnafq2bam {
     input {
         Array[File] reads
         ReferenceFiles ref
-        Array[File]? interval_file
+        Directory genome_lib_dir
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
@@ -14,7 +15,6 @@ task rnafq2bam {
         String container
     }
 
-    String prefix = "test"
     String extension_bam = "bam"
     String extension_bam_index = "bai"
 

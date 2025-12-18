@@ -12,6 +12,7 @@ workflow haplotypecaller_test {
         Array[File]? interval_file
         Array[File]? known_sites
         Array[String]? args
+        String prefix
         Int memory
         Int num_gpus
         Int num_cpus
@@ -35,6 +36,7 @@ workflow haplotypecaller_test {
         },
         interval_file = interval_file,
         known_sites = known_sites,
+        prefix = prefix,
         args = args,
         memory = memory,
         num_gpus = num_gpus,
@@ -57,6 +59,7 @@ workflow haplotypecaller_test {
         bwaIndex: "Reference genome FASTA file"
         interval_file: "Optional interval file for targeted regions (can be used multiple times)"
         known_sites: "Optional array of known variant sites for BQSR (can be used multiple times)"
+        prefix: "Prefix for output files"
         args: "Optional additional arguments for pbrun"
         memory: "Memory in GB"
         num_gpus: "Number of GPUs to use"

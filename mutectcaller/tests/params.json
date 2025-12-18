@@ -14,6 +14,7 @@
         ]
     },
     "mutectcaller_test.known_sites": null,
+    "mutectcaller_test.prefix": "test",
     "mutectcaller_test.args": null,
     "mutectcaller_test.memory": 192,
     "mutectcaller_test.num_gpus": 2,

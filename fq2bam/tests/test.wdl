@@ -12,6 +12,7 @@ workflow fq2bam_test {
         Array[File]? known_sites
         String output_fmt
         Boolean single_ended
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
@@ -38,6 +39,7 @@ workflow fq2bam_test {
         known_sites = known_sites, 
         output_fmt = output_fmt, 
         single_ended = single_ended, 
+        prefix = prefix,
         args = args, 
         memory = memory, 
         num_gpus = num_gpus, 
@@ -72,6 +74,7 @@ workflow fq2bam_test {
         known_sites: "Optional array of known variant sites for BQSR (can be used multiple times)"
         output_fmt: "Output format: 'bam' or 'cram'"
         single_ended: "Whether reads are single-ended"
+        prefix: "Prefix for output files"
         args: "Optional additional arguments for pbrun"
         memory: "Memory in GB"
         num_gpus: "Number of GPUs to use"

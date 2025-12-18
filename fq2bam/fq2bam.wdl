@@ -10,6 +10,7 @@ task fq2bam {
         Array[File]? known_sites
         String output_fmt
         Boolean single_ended
+        String prefix
         Array[String]? args
         Int memory
         Int num_gpus
@@ -17,7 +18,6 @@ task fq2bam {
         String container
     }
 
-    String prefix = "test"
     String extension_bam = output_fmt
     String extension_bam_index = if output_fmt == "cram" then "crai" else "bai"
     
@@ -98,6 +98,7 @@ task fq2bam {
         known_sites: "Optional array of known variant sites for BQSR (can be used multiple times)"
         output_fmt: "Output format: 'bam' or 'cram'"
         single_ended: "Whether reads are single-ended"
+        prefix: "Prefix for output files"
         args: "Optional additional arguments for pbrun"
         memory: "Memory in GB"
         num_gpus: "Number of GPUs to use"
