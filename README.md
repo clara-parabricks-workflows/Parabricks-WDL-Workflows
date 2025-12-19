@@ -48,3 +48,5 @@ Download data and run individual tests (Ex. fq2bam)
 ## Future Work 
 
 * Update test data to use shared files when possible (Ex. All germline use the same reference)
+* Set defaults for common params (memory, num_cpus, qc_metrics=true, etc.) to reduce clutter 
+* Split base_url and file_url in data download scripts. See `starfusion/tests/download_data.sh`. 
