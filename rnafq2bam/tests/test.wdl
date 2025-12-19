@@ -9,6 +9,7 @@ workflow rnafq2bam_test {
     input {
         File sample_sheet
         File fasta
+        File gtf
         String output_fmt
         Boolean single_ended
         Boolean qc_metrics_bool
@@ -31,6 +32,7 @@ workflow rnafq2bam_test {
 
     call star_genomegenerate.star_genomegenerate {
         fasta = fasta,
+        gtf = gtf,
         genome_lib_dir_name = "STAR"
     }
 
@@ -77,6 +79,7 @@ workflow rnafq2bam_test {
     parameter_meta {
         sample_sheet: "Sample sheet file containing paths to FASTQ files"
         fasta: "Reference FASTA file"
+        gtf: "Reference GTF file"
         output_fmt: "Output format (bam or cram)"
         single_ended: "Boolean indicating if the input reads are single-ended"
         qc_metrics_bool: "Boolean indicating if QC metrics should be generated"

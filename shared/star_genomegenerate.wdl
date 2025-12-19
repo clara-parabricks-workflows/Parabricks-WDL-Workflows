@@ -8,7 +8,7 @@ task star_genomegenerate {
         Array[String]? args = []
         Int memory = 32
         Int num_cpus = 8
-        String container = "biocontainers/rna-star:v2.7.0adfsg-1-deb_cv1" 
+        String container = "community.wave.seqera.io/library/htslib_samtools_star_gawk:4de2f983041d42e6" 
     }
 
     command <<<

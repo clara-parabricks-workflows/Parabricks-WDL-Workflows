@@ -3,16 +3,25 @@
 # This script downloads the data files for rnafq2bam into $DATA_DIR
 # It resumes interrupted file downloads and doesn't download files if they already exist
 
+# Download data files
 DATA_DIR=../../data
-REF_DIR=${DATA_DIR}/ref
-
 mkdir -p ${DATA_DIR}
+
+base_url="https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/"
+file_url="genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz"
+curl $base_url$file_url -C - -o ${DATA_DIR}/test.fastq.gz
+
+# Download reference files
+REF_DIR=${DATA_DIR}/ref
 mkdir -p ${REF_DIR}
 
-# Download fastq sample
-file_url="https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz"
-curl $file_url -C - -o ${DATA_DIR}/test.fastq.gz
+base_url="https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/"
+file_urls=(
+    "minigenome.fa"
+    "minigenome.gtf"
+)
 
-# Download reference 
-file_url="https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/minigenome.fa"
-curl $file_url -C - -o ${REF_DIR}/minigenome.fa
+for file_url in "${file_urls[@]}"; do
+    filename=$(basename "$file_url")
+    curl "$base_url$file_url" -C - -o "${REF_DIR}/$filename"
+done
