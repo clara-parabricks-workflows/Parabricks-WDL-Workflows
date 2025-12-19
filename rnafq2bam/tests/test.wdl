@@ -30,7 +30,8 @@ workflow rnafq2bam_test {
     }
 
     call star_genomegenerate.star_genomegenerate {
-        fasta = fasta
+        fasta = fasta,
+        genome_lib_dir_name = "STAR"
     }
 
     call rnafq2bam.rnafq2bam {
