@@ -4,7 +4,7 @@ task star_genomegenerate {
     input {
         File fasta
         File? gtf
-        String genome_dir = "star_genome"
+        String genome_lib_dir_name
         Array[String]? args = []
         Int memory = 32
         Int num_cpus = 8
@@ -14,9 +14,9 @@ task star_genomegenerate {
     command <<<
         set -e
 
-        mkdir -p ~{genome_dir}
+        mkdir -p ~{genome_lib_dir_name}
         STAR --runMode genomeGenerate \
-             --genomeDir ~{genome_dir} \
+             --genomeDir ~{genome_lib_dir_name} \
              --genomeFastaFiles ~{fasta} \
              --runThreadN ~{num_cpus} \
              ~{if defined(gtf) then "--sjdbGTFfile " + gtf else ""} \
@@ -25,7 +25,7 @@ task star_genomegenerate {
     >>>
 
     output {
-        Directory genome_lib_dir = genome_dir
+        Directory genome_lib_dir = genome_lib_dir_name
     }
 
     requirements {
@@ -45,7 +45,7 @@ task star_genomegenerate {
     parameter_meta {
         fasta: "Reference FASTA file to build STAR index"
         gtf: "Optional GTF file to incorporate splice junctions"
-        genome_dir: "Output STAR genome directory name"
+        genome_lib_dir_name: "Output STAR genome directory name"
         args: "Optional additional arguments for STAR"
         memory: "Memory in GB"
         num_cpus: "Number of CPU threads"
