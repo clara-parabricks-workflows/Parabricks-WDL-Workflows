@@ -47,16 +47,16 @@ task minimap2 {
     command <<<
         set -e
 
-        # Make sure the reference and index files are in the same directory 
-        ref_dir=$(dirname ~{ref.fasta})
-        ln -s ~{ref.fasta_fai} ${ref_dir}/$(basename ~{ref.fasta_fai})
+        # Make sure the reference and index files are in the task's working directory
+        ln -s ~{ref.fasta} $(basename ~{ref.fasta})
+        ln -s ~{ref.fasta_fai} $(basename ~{ref.fasta_fai})
         for bwa_file in ~{sep(" ", ref.bwa_index)}; do
-            ln -s "$bwa_file" ${ref_dir}/$(basename "$bwa_file")
+            ln -s "$bwa_file" $(basename "$bwa_file")
         done
 
         pbrun \
             minimap2 \
-            --ref ~{ref.fasta} \
+            --ref $(basename ~{ref.fasta}) \
             ~{in_reads_command} \
             --out-bam ~{prefix}.~{extension_bam} \
             ~{known_sites_command} \
@@ -64,6 +64,7 @@ task minimap2 {
             ~{interval_file_command} \
             ~{index_command} \
             --num-gpus ~{num_gpus} \
+            --preserve-file-symlinks \
             ~{sep(" ", select_first([args, []]))}
     >>>
 
