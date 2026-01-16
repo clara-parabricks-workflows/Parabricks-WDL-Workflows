@@ -6,7 +6,8 @@ task starfusion_build {
         File gtf
         String genome_lib_dir_name
         File fusion_annot_lib
-        File pfam_url
+        String pfam_db
+        String dfam_db
         File annot_filter_url
         Array[String]? args
         Int memory
@@ -15,13 +16,11 @@ task starfusion_build {
     }
 
     command <<<
-        gunzip ~{pfam_url} && hmmpress Pfam-A.hmm
-
         prep_genome_lib.pl \
             --genome_fa ~{fasta} \
             --gtf ~{gtf} \
-            --dfam_db *_dfam.hmm \
-            --pfam_db Pfam-A.hmm \
+            --dfam_db ~{dfam_db} \
+            --pfam_db ~{pfam_db} \
             --fusion_annot_lib ~{fusion_annot_lib} \
             --annot_filter_rule ~{annot_filter_url} \
             --CPU ~{num_cpus} \

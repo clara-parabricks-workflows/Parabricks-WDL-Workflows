@@ -20,7 +20,6 @@ task starfusion {
             --chimeric-junction ~{chimeric_junction} \
             --genome-lib-dir ~{genome_lib_dir} \
             --output-dir ~{prefix} \
-            --num-gpus ~{num_gpus} \
             ~{sep(" ", select_first([args, []]))}
     >>>
 

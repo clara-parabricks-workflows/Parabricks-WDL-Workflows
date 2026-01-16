@@ -18,7 +18,8 @@ workflow starfusion_test {
         Boolean duplicate_metrics_bool
         String prefix
         File fusion_annot_lib
-        String pfam_url
+        String pfam_db
+        String dfam_db
         String annot_filter_url
         Int memory
         Int num_gpus
@@ -65,7 +66,8 @@ workflow starfusion_test {
         gtf = gtf,
         genome_lib_dir_name = "STAR-Fusion",
         fusion_annot_lib = fusion_annot_lib,
-        pfam_url = pfam_url,
+        pfam_db = pfam_db,
+        dfam_db = dfam_db,
         annot_filter_url = annot_filter_url,
         memory = memory,
         num_cpus = num_cpus

@@ -21,6 +21,11 @@ file_urls=(
     "genome/minigenome.gtf"
     "genome/CTAT_HumanFusionLib.mini.dat.gz"
     "genome/Pfam-A.hmm.gz"
+    "genome/test_starfusion_dfam.hmm"
+    "genome/test_starfusion_dfam.hmm.h3f"
+    "genome/test_starfusion_dfam.hmm.h3i"
+    "genome/test_starfusion_dfam.hmm.h3m"
+    "genome/test_starfusion_dfam.hmm.h3p"
     "rnaseq/test_starfusion.annotfilterrule.pm"
 )
 
