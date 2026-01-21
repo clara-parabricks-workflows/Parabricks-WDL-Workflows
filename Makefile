@@ -1,42 +1,25 @@
-WOMTOOL := womtool-81.jar
-PBDOCKER := "nvcr.io/nvidia/clara/clara-parabricks:4.1.0-1"
-DEFAULT_GPU_MODEL := "nvidia-tesla-t4"
+ROOT_DIR := .
+SUBDIRS := $(shell find $(ROOT_DIR) -mindepth 1 -maxdepth 1 -type d)
+SUBDIR_NAMES := $(notdir $(SUBDIRS))
+DOWNLOAD_DATA_SCRIPT := download_data.sh
 
-WDL_DIR := wdl
-WDL_FILES = $(wildcard $(WDL_DIR)/*.wdl)
+.PHONY: all run-all $(SUBDIR_NAMES)  
 
-VAL_DIR := .validate
-INPUTS_DIR := example_inputs
+all: run-all
 
-VALS := $(patsubst %.wdl, $(VAL_DIR)/%.val, $(notdir $(WDL_FILES)))
-MIN_INPUTS := $(patsubst %.wdl, $(INPUTS_DIR)/%.minimalInputs.json, $(notdir $(WDL_FILES)))
-FULL_INPUTS := $(patsubst %.wdl, $(INPUTS_DIR)/%.fullInputs.json, $(notdir $(WDL_FILES)))
+run-all: $(SUBDIR_NAMES)
 
-$(VAL_DIR)/%.val : $(WDL_DIR)/%.wdl pre
-	+java -jar $(WOMTOOL) validate $< | tee $@
+$(SUBDIR_NAMES):
+	@echo "Downloading sample files for $@..."
+	@if [ -f $(ROOT_DIR)/$@/tests/$(DOWNLOAD_DATA_SCRIPT) ]; then \
+		cd $(ROOT_DIR)/$@/tests && \
+		bash $(DOWNLOAD_DATA_SCRIPT) && \
+		sprocket run test.wdl params.json; \
+	fi
 
-validate: $(VALS) pre
+clean: 
+	rm -rf $(ROOT_DIR)/data
 
-$(INPUTS_DIR)/%.minimalInputs.json : $(WDL_DIR)/%.wdl FORCE
-	+java -jar $(WOMTOOL) inputs $< | grep -v "optional" | tee $@
-
-$(INPUTS_DIR)/%.fullInputs.json : $(WDL_DIR)/%.wdl FORCE
-	+java -jar $(WOMTOOL) inputs $< | tee $@
-
-inputs: $(MIN_INPUTS) $(FULL_INPUTS)
-
-set_docker: $(wildcard $(WDL_DIR)/*.wdl)
-	for i in $^; do sed -i "s|pbDocker = \".*\"|pbDocker = \"$(PBDOCKER)\"|g" $$i ; done
-
-set_gpu: $(wildcard $(WDL_DIR)/*.wdl)
-	for i in $^; do sed -i "s|gpuModel = \".*\"|gpuModel = \"$(DEFAULT_GPU_MODEL)\"|g" $$i ; done
-
-pre:
-	mkdir -p $(VAL_DIR)
-
-clean:
-	rm -rf $(VAL_DIR)
-
-.PHONY: validate inputs clean pre set_docker 
-
-FORCE:
+ifneq ($(MAKECMDGOALS),)
+  SUBDIR_NAMES := $(filter $(MAKECMDGOALS), $(SUBDIR_NAMES))
+endif
