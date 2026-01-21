@@ -36,25 +36,22 @@ task fq2bammeth {
     command <<<
         set -e
 
-        # Make sure the reference and index files are in the same directory 
-        # Note: This section could be cleaned up in the future 
-        ref_dir=$(dirname ~{ref.fasta})
+        # Make sure the reference and index files are in the task's working directory
+        ln -s ~{ref.fasta} $(basename ~{ref.fasta})
         for bwa_file in ~{sep(" ", ref.bwa_index)}; do
-            ln -s "$bwa_file" ${ref_dir}/$(basename "$bwa_file")
+            ln -s "$bwa_file" $(basename "$bwa_file")
         done
-
-        index_dir=$(dirname ~{ref.bwa_index[0]})
-        ln -s ~{ref.fasta} ${index_dir}/$(basename ~{ref.fasta})
 
         pbrun \
             fq2bam_meth \
-            --ref ~{ref.fasta} \
+            --ref $(basename ~{ref.fasta}) \
             ~{in_fq_command} \
             --out-bam ~{prefix}.~{extension_bam} \
             ~{known_sites_command} \
             ~{interval_file_command} \
             --num-gpus ~{num_gpus} \
             --monitor-usage \
+            --preserve-file-symlinks \
             ~{sep(" ", select_first([args, []]))}
     >>>
 

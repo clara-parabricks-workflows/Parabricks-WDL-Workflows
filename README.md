@@ -45,6 +45,8 @@ Download data and run individual tests (Ex. fq2bam)
 
 `make fq2bam` 
 
+**Note**: There is a known issue with fq2bammeth (resolving index files) that will be resolved in the next release of Parabricks. 
+
 ## Future Work 
 
 * Update test data to use shared files when possible (Ex. All germline use the same reference)
