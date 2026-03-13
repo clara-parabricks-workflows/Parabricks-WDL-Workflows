@@ -76,7 +76,7 @@ task minimap2 {
     requirements {
         docker: container
         cpu: num_cpus
-        memory: memory
+        memory: "~{memory} GB"
         gpu: true
     }
 
@@ -103,7 +103,7 @@ task minimap2 {
         output_fmt: "Output format, either 'bam' or 'cram'"
         prefix: "Prefix for output files"
         args: "Additional command line arguments to pass to minimap2"
-        memory: "Amount of memory to allocate to the task (in MB)"
+        memory: "Memory requirement (in GB) for the task"
         num_gpus: "Number of GPUs to allocate to the task"
         num_cpus: "Number of CPU cores to allocate to the task"
         container: "Docker container image with Parabricks installed"
