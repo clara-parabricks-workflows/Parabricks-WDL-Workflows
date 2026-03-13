@@ -61,7 +61,7 @@ task deepvariant {
     requirements {
         docker: container
         cpu: num_cpus
-        memory: memory
+        memory: "~{memory} GB"
         gpu: true
     }
 
@@ -84,7 +84,7 @@ task deepvariant {
         single_ended: "Whether reads are single-ended"
         prefix: "Prefix for output files"
         args: "Optional additional arguments for pbrun"
-        memory: "Memory in GB"
+        memory: "Memory requirement (in GB) for the task"
         num_gpus: "Number of GPUs to use"
         num_cpus: "Number of CPU threads"
         container: "Container image URI"

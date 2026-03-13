@@ -30,7 +30,7 @@ task starfusion {
     requirements {
         docker: container
         cpu: num_cpus
-        memory: memory
+        memory: "~{memory} GB"
         gpu: true
     }
 
@@ -51,7 +51,7 @@ task starfusion {
         genome_lib_dir: "Path to the genome library directory"
         prefix: "Prefix for the output directory"
         args: "Additional arguments for StarFusion"
-        memory: "Memory requirement for the task"
+        memory: "Memory requirement (in GB) for the task"
         num_gpus: "Number of GPUs required for the task"
         num_cpus: "Number of CPUs required for the task"
         container: "Docker container to use for the task"
