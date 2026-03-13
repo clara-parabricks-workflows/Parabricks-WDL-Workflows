@@ -4,7 +4,7 @@ fq2bam_workflow:
       reads:
         - [data/sample_1.fq.gz]
       fasta:
-        - ref/Homo_sapiens_assembly38.fasta
+        - ref/genome.fasta
       output_fmt:
         - "bam"
       single_ended:

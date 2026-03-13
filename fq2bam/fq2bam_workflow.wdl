@@ -82,7 +82,7 @@ workflow fq2bam_workflow {
         duplicate_metrics_bool: "Boolean indicating if duplicate metrics should be generated"
         prefix: "Prefix for output files"
         args: "Optional additional arguments for pbrun"
-        memory: "Memory in GB"
+        memory: "Memory requirement (in GB) for the task"
         num_gpus: "Number of GPUs to use"
         num_cpus: "Number of CPU threads"
         container: "Container image URI"
