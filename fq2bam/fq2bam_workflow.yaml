@@ -1,0 +1,25 @@
+fq2bam_workflow:
+  - name: single-ended
+    inputs:
+      reads:
+        - [data/sample_1.fq.gz]
+      fasta:
+        - ref/Homo_sapiens_assembly38.fasta
+      output_fmt:
+        - "bam"
+      single_ended:
+        - true
+      qc_metrics_bool:
+        - false
+      duplicate_metrics_bool:
+        - false
+      prefix:
+        - "test"
+      memory:
+        - 30
+      num_gpus:
+        - 1
+      num_cpus:
+        - 8
+      container:
+        - "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-2"

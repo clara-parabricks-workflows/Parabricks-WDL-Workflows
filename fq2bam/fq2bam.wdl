@@ -20,6 +20,7 @@ task fq2bam {
         String container
     }
 
+    # Array[File] reads = read_lines(samplesheet)
     String extension_bam = output_fmt
     String extension_bam_index = if output_fmt == "cram" then "crai" else "bai"
     

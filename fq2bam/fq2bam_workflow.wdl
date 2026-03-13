@@ -1,12 +1,12 @@
 version 1.2
 
-import "../fq2bam.wdl" as fq2bam
-import "../../shared/bwa_index.wdl" as bwa_index
-import "../../shared/samtools_faidx.wdl" as samtools_faidx
+import "fq2bam.wdl" as fq2bam
+import "../shared/bwa_index.wdl" as bwa_index
+import "../shared/samtools_faidx.wdl" as samtools_faidx
 
-workflow fq2bam_test {
+workflow fq2bam_workflow {
     input {
-        File sample_sheet
+        Array[File] reads
         File fasta
         Array[File]? interval_file
         Array[File]? known_sites
@@ -31,7 +31,7 @@ workflow fq2bam_test {
     }
 
     call fq2bam.fq2bam {
-        reads = read_lines(sample_sheet),
+        reads = reads,
         ref = ReferenceFiles { 
             fasta: fasta, 
             fasta_fai: samtools_faidx.fai,
@@ -72,7 +72,7 @@ workflow fq2bam_test {
     }
 
     parameter_meta {
-        sample_sheet: "Sample sheet of FASTQ files to align"
+        reads: "Sample sheet of FASTQ files to align"
         fasta: "Reference genome FASTA file"
         interval_file: "Optional interval file for targeted regions (can be used multiple times)"
         known_sites: "Optional array of known variant sites for BQSR (can be used multiple times)"
